@@ -1,3 +1,7 @@
+import DarkModeIcon from '@mui/icons-material/DarkMode'; // Moon alternative
+import GetAppIcon from '@mui/icons-material/GetApp'; // Download alternative
+import WbSunnyIcon from '@mui/icons-material/WbSunny'; // Sun alternative
+
 import { School } from '@mui/icons-material';
 import TranslateIcon from '@mui/icons-material/Translate';
 import {
@@ -13,7 +17,8 @@ import {
   Typography,
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Download, Moon, Sun } from 'lucide-react'; // Still using Lucide for icons
+// import { Download, Moon, Sun } from 'lucide-react';
+
 import React, { useEffect, useState } from 'react';
 const Resume = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -52,20 +57,16 @@ const Resume = () => {
             <Typography variant="h3" fontWeight="bold">
               Resume
             </Typography>
-                    <IconButton
-  onClick={() => setDarkMode(!darkMode)}
-  sx={{
-    color: darkMode ? '#FFD700' : '#000', // Yellow for active dark mode, black for normal mode
-    transition: 'color 0.3s ease', // Smooth color transition
-  }}
->
-  {darkMode ? (
-    <Sun className="w-5 h-5" />
-  ) : (
-    <Moon className="w-5 h-5" />
-  )}
-</IconButton>
 
+            <IconButton
+              onClick={() => setDarkMode(!darkMode)}
+              sx={{
+                color: darkMode ? '#FFD700' : '#000',
+                transition: 'color 0.3s ease',
+              }}
+            >
+              {darkMode ? <WbSunnyIcon /> : <DarkModeIcon />}
+            </IconButton>
           </Box>
         </Grid>
 
@@ -418,7 +419,7 @@ const Resume = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  startIcon={<Download />}
+                  startIcon={<GetAppIcon />}
                   href="/cv_fr.pdf"
                   download
                 >
@@ -427,7 +428,7 @@ const Resume = () => {
                 <Button
                   variant="contained"
                   color="secondary"
-                  startIcon={<Download />}
+                  startIcon={<GetAppIcon />}
                   href="/motivation_letter.pdf"
                   download
                 >
@@ -443,5 +444,3 @@ const Resume = () => {
 };
 
 export default Resume;
-
-
