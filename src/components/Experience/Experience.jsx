@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React from "react";
-import { Tilt } from "react-tilt";
+import Tilt from 'react-parallax-tilt';
 import { technologies } from "../../constants";
 import theme from "../../theme";
 import { fadeIn, textVariant } from "../../utils/motion";

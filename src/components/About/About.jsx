@@ -1,7 +1,7 @@
-import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React from "react";
-import { Tilt } from "react-tilt";
+import  Tilt  from 'react-parallax-tilt';
 import angularIcon from "../../assets/icons/angular.png";
 import cssIcon from "../../assets/icons/css.png";
 import djangoIcon from "../../assets/icons/django.png";
@@ -14,12 +14,11 @@ import nodeIcon from "../../assets/icons/nodejs.png";
 import numpyIcon from "../../assets/icons/numpy.png";
 import pandasIcon from "../../assets/icons/pandas.png";
 import postgresIcon from "../../assets/icons/postgresql.png";
+import powerbiIcon from "../../assets/icons/powerbi.png";
 import pythonIcon from "../../assets/icons/python.png";
 import reactIcon from "../../assets/icons/react.png";
 import reduxIcon from "../../assets/icons/redux.png";
-import theme from "../../theme";
 import { fadeIn, textVariant } from "../../utils/motion";
-import powerbiIcon from "../../assets/icons/powerbi.png";
 
 const techStack = [
   { title: "HTML", icon: htmlIcon },

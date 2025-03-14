@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import theme from "../../theme";
 import { fadeIn, textVariant } from "../../utils/motion";
-import { Tilt } from "react-tilt";
+import Tilt from 'react-parallax-tilt';
 
 const projects = [
   {
