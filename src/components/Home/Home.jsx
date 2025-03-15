@@ -6,7 +6,7 @@ const Home = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundImage: "url('public/assets/herobg.png')",
+        backgroundImage: "url('/assets/herobg.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
