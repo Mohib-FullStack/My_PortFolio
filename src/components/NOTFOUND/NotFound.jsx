@@ -1,5 +1,5 @@
 import React from 'react'
-import './NotFound.css'; // Make sure to create and import the CSS file
+import './Notfound.css'; // Make sure to create and import the CSS file
 
 const NotFound = () => {
   return (
