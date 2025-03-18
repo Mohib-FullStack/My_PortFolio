@@ -13,16 +13,22 @@ SECRET_KEY = config(
     "SECRET_KEY", default="uik3z=ovrad_r_km6bt%))&2a^m!kx)md&#oi7x%ml1bdro0b1"
 )
 DEBUG = config("DEBUG", default=True, cast=bool)
+
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1").split(",")
+
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
+ALLOWED_HOSTS = ["*"]
+
+
 INTERNAL_IPS = ["127.0.0.1"]
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # Define custom templates directory
-        "APP_DIRS": True,  # Use app directories for templates
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -33,7 +39,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 # Installed applications
 INSTALLED_APPS = [
@@ -49,6 +54,7 @@ INSTALLED_APPS = [
     "Experience",
     "Blog",
     "Resume",
+    "Contact",
     "User",
     "corsheaders",
     "rest_framework",
@@ -62,17 +68,16 @@ INSTALLED_APPS = [
 
 # Middleware
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 HAYSTACK_CONNECTIONS = {
     "default": {
@@ -90,12 +95,10 @@ CELERY_TASK_SERIALIZER = "json"
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
-
 # CORS configuration
-CORS_ALLOWED_ORIGINS = config(
-    "CORS_ALLOWED_ORIGINS", default="http://localhost:5173"
-).split(",")
+CORS_ALLOW_ALL_ORIGINS = True  # Allows all origins (remove if restricting)
 CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
+CORS_ALLOW_CREDENTIALS = True
 
 # Client URL
 CLIENT_URL = config("CLIENT_URL", default="http://localhost:5173")
@@ -122,7 +125,7 @@ CLOUDINARY_NAME = config("CLOUDINARY_NAME")
 CLOUDINARY_API = config("CLOUDINARY_API")
 CLOUDINARY_SECRET_KEY = config("CLOUDINARY_SECRET_KEY")
 
-if not all([CLOUDINARY_NAME, CLOUDINARY_API, CLOUDINARY_SECRET_KEY]):
+if not CLOUDINARY_NAME or not CLOUDINARY_API or not CLOUDINARY_SECRET_KEY:
     raise ValueError("Cloudinary configuration is incomplete.")
 
 CLOUDINARY_STORAGE = {
@@ -157,11 +160,6 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
 }
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
-
 
 # JWT settings
 SIMPLE_JWT = {
