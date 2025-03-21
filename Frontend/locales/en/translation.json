@@ -1,0 +1,21 @@
+{
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "blog": "Blog",
+    "contact": "Contact",
+    "resume": "Resume",
+    "fullStackDeveloper": "Full-Stack Developer",
+    "language": "Language",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    
+      "hero": {
+        "greeting": "Hello, I am",
+        "name": "Mohib",
+        "description": "I develop 3D visuals, user interfaces, and web applications"
+      }
+    
+  }

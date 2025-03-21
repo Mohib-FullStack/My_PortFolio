@@ -1,0 +1,24 @@
+{
+    "home": "Accueil",
+    "about": "À propos",
+    "projects": "Projets",
+    "experience": "Expérience",
+    "blog": "Blog",
+    "contact": "Contact",
+    "resume": "CV",
+    "fullStackDeveloper": "Développeur Full-Stack",
+    "language": "Langue",
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+
+    
+      "hero": {
+        "greeting": "Bonjour, je suis",
+        "name": "Mohib",
+        "description": "Je développe des visuels 3D, des interfaces utilisateur, et des applications web"
+      }
+    
+  }
+
+

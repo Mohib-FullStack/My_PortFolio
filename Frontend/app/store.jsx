@@ -37,12 +37,16 @@
 
 //! new
 import { configureStore } from "@reduxjs/toolkit";
+import languageReducer from "../../Frontend/src/features/language/languageSlice";
 import contactReducer from '../../Frontend/src/features/contact/contactSlice';
+import resumeReducer from "../../Frontend/src/features/resume/resumeSlice"; // Adjust the path as needed
 import snackbarReducer from '../../Frontend/src/features/snackbar/snackbarSlice';
 
 const store = configureStore({
   reducer: {
+    language: languageReducer,
     contact: contactReducer, // Contact slice for handling messages
+    resume: resumeReducer, // Make sure the slice is added here
     snackbar: snackbarReducer,
   },
 });
