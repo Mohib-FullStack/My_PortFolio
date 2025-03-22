@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "A personal portfolio project"
 authors = ["Mohib <your.email@example.com>"]
 readme = "README.md"
-package-mode = false  # This disables packaging and focuses only on dependency management.
 
 [tool.poetry.dependencies]
 python = "^3.11"
