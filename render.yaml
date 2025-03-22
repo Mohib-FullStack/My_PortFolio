@@ -3,12 +3,54 @@ services:
     name: my-portfolio
     env: python
     plan: free
-    pythonVersion: '3.11'
-    rootDir: ./Server
+    rootDir: ./Server # Telling Render to look inside the Server folder
     buildCommand: |
-      pip install -r requirements.txt &&
+      poetry install
       python manage.py collectstatic --noinput
-    startCommand: 'gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000'
+    startCommand: poetry run gunicorn protfolio.wsgi:application --bind 0.0.0.0:8000
+    envVars:
+      - key: SECRET_KEY
+        value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
+      - key: DEBUG
+        value: 'False'
+      - key: DB_NAME
+        value: 'My_portfolio'
+      - key: DB_USER
+        value: 'postgres'
+      - key: DB_PASSWORD
+        value: 'mavishaP15112010@'
+      - key: DB_HOST
+        value: 'localhost'
+      - key: DB_PORT
+        value: '5432'
+      - key: SMTP_USERNAME
+        value: 'fullstack.mohibur@gmail.com'
+      - key: SMTP_PASSWORD
+        value: 'mnbt rltt wsvj bfve'
+      - key: CLOUDINARY_NAME
+        value: 'dddt2nvvz'
+      - key: CLOUDINARY_API
+        value: '766673569394371'
+      - key: CLOUDINARY_SECRET_KEY
+        value: 'xO-46NSuWXF8Tjs6Zz0_xwRbuqI'
+      - key: STRIPE_SECRET_KEY
+        value: 'your_secret_key_here'
+      - key: STRIPE_PUBLIC_KEY
+        value: 'your_publishable_key_here'
+      - key: ALLOWED_HOSTS
+        value: 'http://localhost:5173,render.com'
+      - key: JWT_ACTIVATION_KEY
+        value: 'fp02=xkyv$&-w$y48g26&hq)3vkcp=rnxfeccksba8*i$mg8y-'
+      - key: JWT_ACCESS_KEY
+        value: '#7a(j(7v&+7ri6=ww=4jkotr8kw5m4y)le1*jlaqel*r*%ev=r'
+      - key: JWT_REFRESH_KEY
+        value: '!c^sg$pa0wvu#7ephw0k*24cvu90+&akwzmdgrtl9dp_3qq&hs'
+      - key: JWT_RESET_PASSWORD_KEY
+        value: '9s)(q3^#^xm4%*q4^v=pq&q3fu!ayj@0&o*_lv8rr^g6ckh9hq'
+      - key: JWT_SECRET
+        value: 'go6z9k9l-ghjjnp0i5uwbl*ffn%r!0xf-#ditl^t76-bm6foz'
+      - key: CLIENT_URL
+        value: 'http://localhost:5173'
 # services:
 #   - type: web
 #     name: my-portfolio
