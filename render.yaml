@@ -1,15 +1,17 @@
-services:
+    services:
   - type: web
     name: my-portfolio
     env: python
     plan: free
-    rootDir: ./Server # Ensure Render looks inside the Server folder
+    rootDir: ./Server  # Ensure this is correct
+   
     buildCommand: |
-      poetry install  # Install dependencies with poetry
-      python manage.py collectstatic --noinput  # Collect static files
-    startCommand: poetry run gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000 # Start the app with gunicorn
+      poetry install
+      python manage.py collectstatic --noinput
+    startCommand: poetry run gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000
     envVars:
-      - key: SECRET_KEY
+      ...
+       - key: SECRET_KEY
         value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
       - key: DEBUG
         value: 'False'
