@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "my-portfolio"
+version = "0.1.0"
+description = ""
+authors = ["Rahman Mohibur <mohibur_rahman09@yahoo.fr>"]
+readme = "README.md"  # Optional
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2"
+gunicorn = "^20.1.0"
+psycopg2-binary = "^2.9.9"
+python-dotenv = "^1.0.0"
+# Add other dependencies here
+
+[tool.poetry.dev-dependencies]  # Optional
+pytest = "^7.0"
+black = "^23.0"
+flake8 = "^6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
