@@ -3,8 +3,12 @@ services:
     name: my-portfolio
     env: python
     plan: free
-    rootDir: ./Server # Telling Render to look inside the Server folder
-    buildCommand: 'poetry install && poetry run python manage.py collectstatic --noinput'
+    pythonVersion: '3.11' # Specify Python version
+    rootDir: ./Server
+    buildCommand: |
+      pip install poetry && 
+      poetry install --no-root && 
+      poetry run python manage.py collectstatic --noinput
     startCommand: 'poetry run gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000'
     envVars:
       - key: SECRET_KEY
