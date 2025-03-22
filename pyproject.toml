@@ -3,7 +3,7 @@ name = "my-portfolio"
 version = "0.1.0"
 description = "A personal portfolio project"
 authors = ["Mohib <your.email@example.com>"]
-readme = "README.md"
+
 
 [tool.poetry.dependencies]
 python = "^3.11"
