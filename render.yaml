@@ -3,7 +3,8 @@
     name: my-portfolio
     env: python
     plan: free
-    rootDir: ./Server  # Ensure this is correct
+    #rootDir: ./Server  # Ensure this is correct
+    rootDir: ./  # Change this to the root directory
    
     buildCommand: |
       poetry install
