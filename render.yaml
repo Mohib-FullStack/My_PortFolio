@@ -8,39 +8,43 @@ services:
       poetry install --no-root
     startCommand: python manage.py runserver
     envVars:
-      - key: SECRET_KEY
-        value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
-      - key: DEBUG
-        value: 'False'
-      - key: DB_NAME
+      - key: POSTGRES_DATABASE # Match .env
         value: 'My_portfolio'
-      - key: DB_USER
+      - key: POSTGRES_USER # Match .env
         value: 'postgres'
-      - key: DB_PASSWORD
+      - key: POSTGRES_PASSWORD # Match .env
         value: 'mavishaP15112010@'
-      - key: DB_HOST
+      - key: POSTGRES_HOST # Match .env
         value: 'localhost'
-      - key: DB_PORT
+      - key: POSTGRES_PORT # Match .env
         value: '5432'
-      - key: SMTP_USERNAME
+      - key: SMTP_USERNAME # Match .env
         value: 'fullstack.mohibur@gmail.com'
-      - key: SMTP_PASSWORD
+      - key: SMTP_PASSWORD # Match .env
         value: 'mnbt rltt wsvj bfve'
-      - key: CLOUDINARY_NAME
+      - key: CLOUDINARY_NAME # Match .env
         value: 'dddt2nvvz'
-      - key: CLOUDINARY_API
+      - key: CLOUDINARY_API # Match .env
         value: '766673569394371'
-      - key: CLOUDINARY_SECRET_KEY
+      - key: CLOUDINARY_SECRET_KEY # Match .env
         value: 'xO-46NSuWXF8Tjs6Zz0_xwRbuqI'
-      - key: STRIPE_SECRET_KEY
+      - key: SECRET_KEY # Match .env
+        value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
+      - key: STRIPE_SECRET_KEY # Match .env
         value: 'your_secret_key_here'
-      - key: STRIPE_PUBLIC_KEY
+      - key: STRIPE_PUBLIC_KEY # Match .env
         value: 'your_publishable_key_here'
-      - key: ALLOWED_HOSTS
-        value: 'localhost, .render.com'
-      - key: JWT_ACTIVATION_KEY
+      - key: ALLOWED_HOSTS # Match .env
+        value: 'http://localhost:5173, .render.com' # Combine both
+      - key: JWT_ACTIVATION_KEY # Match .env
         value: 'fp02=xkyv$&-w$y48g26&hq)3vkcp=rnxfeccksba8*i$mg8y-'
-      - key: JWT_ACCESS_KEY
+      - key: JWT_ACCESS_KEY # Match .env
         value: '#7a(j(7v&+7ri6=ww=4jkotr8kw5m4y)le1*jlaqel*r*%ev=r'
-      - key: JWT_REFRESH_KEY
+      - key: JWT_REFRESH_KEY # Match .env
         value: '!c^sg$pa0wvu#7ephw0k*24cvu90+&akwzmdgrtl9dp_3qq&hs'
+      - key: JWT_RESET_PASSWORD_KEY # Match .env
+        value: '9s)(q3^#^xm4%*q4^v=pq&q3fu!ayj@0&o*_lv8rr^g6ckh9hq'
+      - key: JWT_SECRET # Match .env
+        value: 'go6z9k9l-ghjjnp0i5uwbl*ffn%r!0xf-#ditl^t76-bm6foz'
+      - key: CLIENT_URL # Match .env
+        value: 'http://localhost:5173'
