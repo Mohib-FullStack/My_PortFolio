@@ -3,7 +3,7 @@ services:
     name: MyPortfolio
     env: python
     plan: free
-    workingDirectory: Server # Set working directory to "Server"
+    workingDirectory: Server  # Set working directory to "Server"
     buildCommand: |
       poetry install --no-root
     startCommand: python manage.py runserver
