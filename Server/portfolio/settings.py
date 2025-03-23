@@ -148,9 +148,14 @@ EMAIL_HOST_USER = config("SMTP_USERNAME")
 EMAIL_HOST_PASSWORD = config("SMTP_PASSWORD")
 
 # Static files
+# Add this line to define the STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Ensure you have the following in your settings as well
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-MEDIA_URL = "/media/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 # Authentication
 # AUTH_USER_MODEL = "User.User"
