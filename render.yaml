@@ -5,7 +5,7 @@ services:
     plan: free
     rootDir: ./Server # Ensure this points to the correct directory
     buildCommand: |
-      poetry install
+      poetry install --no-root  # Skip installing the current project
       python manage.py collectstatic --noinput
     startCommand: poetry run gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000
     envVars:
@@ -45,7 +45,6 @@ services:
         value: '#7a(j(7v&+7ri6=ww=4jkotr8kw5m4y)le1*jlaqel*r*%ev=r'
       - key: JWT_REFRESH_KEY
         value: '!c^sg$pa0wvu#7ephw0k*24cvu90+&akwzmdgrtl9dp_3qq&hs'
-      - key: JWT_RE
 #     plan: free
 #     rootDir: ./Server # Telling Render to look inside the Server folder
 #     buildCommand: |
