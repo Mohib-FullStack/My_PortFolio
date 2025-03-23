@@ -3,9 +3,9 @@ services:
     name: my-portfolio
     env: python
     plan: free
-    rootDir: ./Server # Ensure this points to the correct directory
+    rootDir: . # Since render.yaml is inside the Server folder, use '.'
     buildCommand: |
-      pip install -r requirements.txt  # Install dependencies from requirements.txt
+      pip install -r requirements.txt
       python manage.py collectstatic --noinput
     startCommand: gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000
     envVars:
@@ -38,7 +38,7 @@ services:
       - key: STRIPE_PUBLIC_KEY
         value: 'your_publishable_key_here'
       - key: ALLOWED_HOSTS
-        value: 'http://localhost:5173,render.com'
+        value: 'localhost, .render.com'
       - key: JWT_ACTIVATION_KEY
         value: 'fp02=xkyv$&-w$y48g26&hq)3vkcp=rnxfeccksba8*i$mg8y-'
       - key: JWT_ACCESS_KEY
