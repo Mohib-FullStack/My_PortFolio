@@ -3,11 +3,13 @@ services:
     name: my-portfolio
     env: python
     plan: free
-    rootDir: ./Server # Ensure this points to the correct directory
+    rootDir: ./Server  # Ensure this points to the correct directory
     buildCommand: |
       poetry install --no-root  # Skip installing the current project
       python manage.py collectstatic --noinput
     startCommand: poetry run gunicorn portfolio.wsgi:application --bind 0.0.0.0:8000
+    envVars:
+      ...
     envVars:
       - key: SECRET_KEY
         value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
