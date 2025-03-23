@@ -6,7 +6,9 @@ services:
     workingDirectory: Server # Set working directory to "Server"
     buildCommand: |
       poetry install --no-root
-    startCommand: python manage.py runserver
+      poetry run python manage.py collectstatic --noinput
+    startCommand: |
+      poetry run gunicorn your_project_name.wsgi:application
     envVars:
       - key: POSTGRES_DATABASE
         value: 'My_portfolio'
