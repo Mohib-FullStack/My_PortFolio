@@ -3,12 +3,12 @@ services:
     name: MyPortfolio
     env: python
     plan: free
-    workingDirectory: Server # Set working directory to "Server"
+    workingDirectory: Server  # Set working directory to "Server"
     buildCommand: |
       poetry install --no-root
       poetry run python manage.py collectstatic --noinput
     startCommand: |
-      poetry run gunicorn your_project_name.wsgi:application
+      poetry run gunicorn portfolio.wsgi:application
     envVars:
       - key: POSTGRES_DATABASE
         value: 'My_portfolio'
