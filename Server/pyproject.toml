@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "my-portfolio"
+version = "0.1.0"
+description = "A personal portfolio project"
+authors = ["Mohib <your.email@example.com>"]
+readme = "README.md"
+package-mode = false  # This disables packaging and focuses only on dependency management.
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2"
+gunicorn = "^20.1.0"
+psycopg2-binary = "^2.9.9"
+python-dotenv = "^1.0.0"
+djangorestframework = "^3.14"
+whitenoise = "^6.0.0"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
