@@ -3,24 +3,25 @@ services:
     name: MyPortfolio
     env: python
     plan: free
+    workingDirectory: Server # Set the working directory to "Server"
     buildCommand: |
       poetry install --no-root
     startCommand: python manage.py runserver
     envVars:
       - key: SECRET_KEY
-        generateValue: true # Let Render generate a secure secret key
+        value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
       - key: DEBUG
         value: 'False'
       - key: DB_NAME
-        value: 'my_portfolio' # Match this with your Render PostgreSQL database name
+        value: 'My_portfolio'
       - key: DB_USER
-        value: 'postgres' # Default user for Render PostgreSQL
+        value: 'postgres'
       - key: DB_PASSWORD
-        generateValue: true # Let Render generate a secure password
+        value: 'mavishaP15112010@'
       - key: DB_HOST
-        value: 'your-render-postgres-host' # Replace with Render PostgreSQL host
+        value: 'localhost'
       - key: DB_PORT
-        value: '5432' # Default port for PostgreSQL
+        value: '5432'
       - key: SMTP_USERNAME
         value: 'fullstack.mohibur@gmail.com'
       - key: SMTP_PASSWORD
@@ -36,10 +37,10 @@ services:
       - key: STRIPE_PUBLIC_KEY
         value: 'your_publishable_key_here'
       - key: ALLOWED_HOSTS
-        value: 'localhost, .onrender.com' # Use `.onrender.com` for Render deployments
+        value: 'localhost, .render.com'
       - key: JWT_ACTIVATION_KEY
-        generateValue: true # Let Render generate a secure key
+        value: 'fp02=xkyv$&-w$y48g26&hq)3vkcp=rnxfeccksba8*i$mg8y-'
       - key: JWT_ACCESS_KEY
-        generateValue: true # Let Render generate a secure key
+        value: '#7a(j(7v&+7ri6=ww=4jkotr8kw5m4y)le1*jlaqel*r*%ev=r'
       - key: JWT_REFRESH_KEY
-        generateValue: true # Let Render generate a secure key
+        value: '!c^sg$pa0wvu#7ephw0k*24cvu90+&akwzmdgrtl9dp_3qq&hs'
