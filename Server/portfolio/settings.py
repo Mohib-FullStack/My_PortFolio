@@ -18,12 +18,12 @@ DEBUG = config("DEBUG", default=False, cast=bool)  # Ensure DEBUG is False in pr
 # Allowed hosts
 ALLOWED_HOSTS = [
     "https://my-portfolio-pmve.onrender.com",  # Backend URL
-    "your-frontend.onrender.com",  # Frontend URL
+    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
 ]
 
 # CORS configuration
 CORS_ALLOWED_ORIGINS = [
-    "https://your-frontend.onrender.com",  # Frontend URL
+    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
 ]
 
 # Debug toolbar
