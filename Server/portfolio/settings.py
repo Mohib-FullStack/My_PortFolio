@@ -9,27 +9,82 @@ from decouple import config
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# # Security settings
+# SECRET_KEY = config(
+#     "SECRET_KEY", default="uik3z=ovrad_r_km6bt%))&2a^m!kx)md&#oi7x%ml1bdro0b1"
+# )
+# DEBUG = config("DEBUG", default=False, cast=bool)  # Ensure DEBUG is False in production
+
+
 # Security settings
 SECRET_KEY = config(
     "SECRET_KEY", default="uik3z=ovrad_r_km6bt%))&2a^m!kx)md&#oi7x%ml1bdro0b1"
 )
-DEBUG = config("DEBUG", default=False, cast=bool)  # Ensure DEBUG is False in production
+DEBUG = config("DEBUG", default=False, cast=bool)
+
+# Enhanced security headers
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # Allowed hosts
 ALLOWED_HOSTS = [
-    "my-portfolio-pmve.onrender.com",  # Backend URL
-    "my-portfolio-1-b7xw.onrender.com",  # Frontend URL
+    "my-portfolio-pmve.onrender.com",
+    "my-portfolio-1-b7xw.onrender.com",
+    "localhost",
+    "127.0.0.1",
 ]
 
 
 # CORS configuration
-CORS_ALLOW_ALL_ORIGINS = False  # Disable all origins
+# CORS_ALLOW_ALL_ORIGINS = False  # Disable all origins
+# CORS_ALLOWED_ORIGINS = [
+#     "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
+# ]
+# CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
+# CORS_ALLOW_CREDENTIALS = True
+
+
+# Enhanced CORS configuration
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
+    "https://my-portfolio-1-b7xw.onrender.com",
+    "http://my-portfolio-1-b7xw.onrender.com",
 ]
-CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://my-portfolio-1-b7xw.onrender.com",
+    "https://my-portfolio-pmve.onrender.com",
+]
+
+# Cookie settings
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_HTTPONLY = False  # Required for Axios to read CSRF token
+SESSION_COOKIE_HTTPONLY = True
 
 # Debug toolbar
 INTERNAL_IPS = ["127.0.0.1"]
