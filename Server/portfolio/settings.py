@@ -15,16 +15,21 @@ SECRET_KEY = config(
 )
 DEBUG = config("DEBUG", default=False, cast=bool)  # Ensure DEBUG is False in production
 
+
 # Allowed hosts
 ALLOWED_HOSTS = [
-    "https://my-portfolio-pmve.onrender.com",  # Backend URL
-    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
+    "my-portfolio-pmve.onrender.com",  # Backend URL
+    "my-portfolio-1-b7xw.onrender.com",  # Frontend URL
 ]
 
+
 # CORS configuration
+CORS_ALLOW_ALL_ORIGINS = False  # Disable all origins
 CORS_ALLOWED_ORIGINS = [
     "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
 ]
+CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
+CORS_ALLOW_CREDENTIALS = True
 
 # Debug toolbar
 INTERNAL_IPS = ["127.0.0.1"]
@@ -102,10 +107,6 @@ CELERY_TASK_SERIALIZER = "json"
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
-# CORS configuration
-CORS_ALLOW_ALL_ORIGINS = True  # Allows all origins (remove if restricting)
-CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
-CORS_ALLOW_CREDENTIALS = True
 
 # Client URL
 CLIENT_URL = config("CLIENT_URL", default="http://localhost:5173")
