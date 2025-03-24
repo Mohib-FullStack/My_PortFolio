@@ -9,18 +9,11 @@ from .models import Contact
 from .serializers import ContactSerializer
 
 
-@api_view(["GET", "POST"])
+@api_view(["POST"])
 @permission_classes([AllowAny])
 def contact_list(request):
-    """Handles listing all contacts (GET) and submitting a new contact form (POST)."""
-    if request.method == "GET":
-        contacts = Contact.objects.all().order_by("-created_at")
-        serializer = ContactSerializer(contacts, many=True)
-        return Response(
-            {"success": True, "payload": serializer.data}, status=status.HTTP_200_OK
-        )
-
-    elif request.method == "POST":
+    """Handles submitting a new contact form (POST)."""
+    try:
         # Ensure session exists for CSRF token
         if not request.session.session_key:
             request.session.create()
@@ -29,26 +22,25 @@ def contact_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {
-                    "success": True,
-                    "payload": serializer.data,
-                    "csrf_token": get_token(request),
-                },
+                {"success": True, "message": "Contact submitted successfully"},
                 status=status.HTTP_201_CREATED,
             )
+
         return Response(
-            {
-                "success": False,
-                "error": serializer.errors,
-                "csrf_token": get_token(request),
-            },
+            {"success": False, "errors": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    except Exception as e:
+        return Response(
+            {"success": False, "message": "Internal Server Error", "error": str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
 @api_view(["GET"])
 def get_csrf_token(request):
-    """Endpoint to get CSRF token"""
+    """Endpoint to get CSRF token."""
     if not request.session.session_key:
         request.session.create()
     return Response(

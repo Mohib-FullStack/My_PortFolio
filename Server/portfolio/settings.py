@@ -1,4 +1,3 @@
-#! Production
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -8,13 +7,6 @@ from decouple import config
 
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# # Security settings
-# SECRET_KEY = config(
-#     "SECRET_KEY", default="uik3z=ovrad_r_km6bt%))&2a^m!kx)md&#oi7x%ml1bdro0b1"
-# )
-# DEBUG = config("DEBUG", default=False, cast=bool)  # Ensure DEBUG is False in production
-
 
 # Security settings
 SECRET_KEY = config(
@@ -28,7 +20,6 @@ SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-
 # Allowed hosts
 ALLOWED_HOSTS = [
     "my-portfolio-pmve.onrender.com",
@@ -37,44 +28,18 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
-
 # CORS configuration
-# CORS_ALLOW_ALL_ORIGINS = False  # Disable all origins
-# CORS_ALLOWED_ORIGINS = [
-#     "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
-# ]
-# CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
-# CORS_ALLOW_CREDENTIALS = True
-
-
-# Enhanced CORS configuration
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "https://my-portfolio-1-b7xw.onrender.com",
     "http://my-portfolio-1-b7xw.onrender.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
-
+CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
+CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
 CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
+
+# CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     "https://my-portfolio-1-b7xw.onrender.com",
     "https://my-portfolio-pmve.onrender.com",
@@ -162,7 +127,6 @@ CELERY_TASK_SERIALIZER = "json"
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
-
 # Client URL
 CLIENT_URL = config("CLIENT_URL", default="http://localhost:5173")
 
@@ -184,17 +148,10 @@ DATABASES = {
 }
 
 # Cloudinary configuration
-CLOUDINARY_NAME = config("CLOUDINARY_NAME")
-CLOUDINARY_API = config("CLOUDINARY_API")
-CLOUDINARY_SECRET_KEY = config("CLOUDINARY_SECRET_KEY")
-
-if not CLOUDINARY_NAME or not CLOUDINARY_API or not CLOUDINARY_SECRET_KEY:
-    raise ValueError("Cloudinary configuration is incomplete.")
-
 CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": CLOUDINARY_NAME,
-    "API_KEY": CLOUDINARY_API,
-    "API_SECRET": CLOUDINARY_SECRET_KEY,
+    "CLOUD_NAME": config("CLOUDINARY_NAME"),
+    "API_KEY": config("CLOUDINARY_API"),
+    "API_SECRET": config("CLOUDINARY_SECRET_KEY"),
 }
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
@@ -208,59 +165,10 @@ EMAIL_HOST_PASSWORD = config("SMTP_PASSWORD")
 
 # Static files
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Collect static files here
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # Additional static directories
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Authentication
-# AUTH_USER_MODEL = "User.User"
-
-# Django REST Framework configuration
-# REST_FRAMEWORK = {
-#     "DEFAULT_AUTHENTICATION_CLASSES": [
-#         "rest_framework_simplejwt.authentication.JWTAuthentication",
-#     ],
-#     "DEFAULT_PERMISSION_CLASSES": [
-#         "rest_framework.permissions.IsAuthenticated",
-#     ],
-# }
-
-
-# Add these to your settings.py
-CSRF_TRUSTED_ORIGINS = [
-    "https://my-portfolio-1-b7xw.onrender.com",
-    "https://my-portfolio-pmve.onrender.com",
-]
-
-# For API views, you might want to exempt CSRF
-# REST_FRAMEWORK = {
-#     "DEFAULT_AUTHENTICATION_CLASSES": [
-#         "rest_framework_simplejwt.authentication.JWTAuthentication",
-#     ],
-#     "DEFAULT_PERMISSION_CLASSES": [
-#         "rest_framework.permissions.AllowAny",  # Or IsAuthenticated if needed
-#     ],
-#     "DEFAULT_RENDERER_CLASSES": [
-#         "rest_framework.renderers.JSONRenderer",
-#     ],
-# }
-
-# Add to your CORS settings
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-
-CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_HTTPONLY = False  # Required for Axios to read the CSRF token
-SESSION_COOKIE_HTTPONLY = True
-
-# Update REST_FRAMEWORK settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -277,6 +185,7 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
     ],
 }
+
 # JWT settings
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
@@ -303,6 +212,7 @@ USE_TZ = True
 
 # Primary key type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 #! this is for Developement
 # import os
