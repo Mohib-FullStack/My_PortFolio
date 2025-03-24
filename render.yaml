@@ -1,14 +1,14 @@
 services:
   - type: web
-    name: MyPortfolio
+    name: MyPortfolioBackend
     env: python
     plan: free
-    workingDirectory: Server # Set working directory to "Server"
+    workingDirectory: Server # Backend working directory
     buildCommand: |
-      cd Server && poetry install --no-root
+      poetry install --no-root
       poetry run python manage.py collectstatic --noinput
     startCommand: |
-      cd Server && poetry run gunicorn portfolio.wsgi:application
+      poetry run gunicorn portfolio.wsgi:application
     envVars:
       - key: POSTGRES_DATABASE
         value: 'My_portfolio'
@@ -50,30 +50,40 @@ services:
         value: 'go6z9k9l-ghjjnp0i5uwbl*ffn%r!0xf-#ditl^t76-bm6foz'
       - key: CLIENT_URL
         value: 'http://localhost:5173'
+
+  - type: static_site
+    name: MyPortfolioFrontend
+    plan: free
+    workingDirectory: Frontend # Frontend working directory
+    buildCommand: |
+      npm install
+      npm run build
+    publishDirectory: dist # Output directory for the frontend build
+    envVars:
+      - key: VITE_API_URL
+        value: 'https://my-portfolio-pmve.onrender.com/api'
+#! curent
 # services:
 #   - type: web
 #     name: MyPortfolio
 #     env: python
 #     plan: free
+#     workingDirectory: Server # Set working directory to "Server"
 #     buildCommand: |
-#       cd Server &&
-#       poetry install --no-root &&
+#       cd Server && poetry install --no-root
 #       poetry run python manage.py collectstatic --noinput
-#     startCommand: poetry run python manage.py runserver 0.0.0.0:8000
+#     startCommand: |
+#       cd Server && poetry run gunicorn portfolio.wsgi:application
 #     envVars:
-#       - key: SECRET_KEY
-#         value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
-#       - key: DEBUG
-#         value: 'False'
-#       - key: DB_NAME
+#       - key: POSTGRES_DATABASE
 #         value: 'My_portfolio'
-#       - key: DB_USER
+#       - key: POSTGRES_USER
 #         value: 'postgres'
-#       - key: DB_PASSWORD
+#       - key: POSTGRES_PASSWORD
 #         value: 'mavishaP15112010@'
-#       - key: DB_HOST
+#       - key: POSTGRES_HOST
 #         value: 'localhost'
-#       - key: DB_PORT
+#       - key: POSTGRES_PORT
 #         value: '5432'
 #       - key: SMTP_USERNAME
 #         value: 'fullstack.mohibur@gmail.com'
@@ -85,15 +95,24 @@ services:
 #         value: '766673569394371'
 #       - key: CLOUDINARY_SECRET_KEY
 #         value: 'xO-46NSuWXF8Tjs6Zz0_xwRbuqI'
+#       - key: SECRET_KEY
+#         value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
 #       - key: STRIPE_SECRET_KEY
 #         value: 'your_secret_key_here'
 #       - key: STRIPE_PUBLIC_KEY
 #         value: 'your_publishable_key_here'
 #       - key: ALLOWED_HOSTS
-#         value: 'localhost, .render.com'
+#         value: 'http://localhost:5173, .render.com'
 #       - key: JWT_ACTIVATION_KEY
 #         value: 'fp02=xkyv$&-w$y48g26&hq)3vkcp=rnxfeccksba8*i$mg8y-'
 #       - key: JWT_ACCESS_KEY
 #         value: '#7a(j(7v&+7ri6=ww=4jkotr8kw5m4y)le1*jlaqel*r*%ev=r'
 #       - key: JWT_REFRESH_KEY
 #         value: '!c^sg$pa0wvu#7ephw0k*24cvu90+&akwzmdgrtl9dp_3qq&hs'
+#       - key: JWT_RESET_PASSWORD_KEY
+#         value: '9s)(q3^#^xm4%*q4^v=pq&q3fu!ayj@0&o*_lv8rr^g6ckh9hq'
+#       - key: JWT_SECRET
+#         value: 'go6z9k9l-ghjjnp0i5uwbl*ffn%r!0xf-#ditl^t76-bm6foz'
+#       - key: CLIENT_URL
+#         value: 'http://localhost:5173'
+
