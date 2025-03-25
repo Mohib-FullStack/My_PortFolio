@@ -101,6 +101,7 @@ CELERY_TASK_SERIALIZER = "json"
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
+
 # CORS configuration
 CORS_ALLOWED_ORIGINS = [
     "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
@@ -113,10 +114,11 @@ CORS_ALLOW_CREDENTIALS = True  # Allow credentials (cookies) to be sent
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "Authorization",
     "Content-Type",
+    "X-Requested-With",  # For some XMLHttpRequest-based requests
 ]
 
 # Ensure `Access-Control-Allow-Credentials` is set to 'true'
-CORS_ALLOW_ALL_ORIGINS = False  # Set to False if you want to restrict origins
+CORS_ALLOW_ALL_ORIGINS = False  # Set to False to restrict origins
 
 
 # Client URL
