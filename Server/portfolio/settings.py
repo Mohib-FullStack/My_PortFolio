@@ -103,10 +103,20 @@ STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
 # CORS configuration
 CORS_ALLOWED_ORIGINS = [
-    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend
-    "https://my-portfolio-pmve.onrender.com",  # Backend
-    "http://localhost:5173",  # Local development
+    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
+    "https://my-portfolio-pmve.onrender.com",  # Backend URL
+    "http://localhost:5173",  # Local development (if needed)
 ]
+
+CORS_ALLOW_CREDENTIALS = True  # Allow credentials (cookies) to be sent
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "Authorization",
+    "Content-Type",
+]
+
+# Ensure `Access-Control-Allow-Credentials` is set to 'true'
+CORS_ALLOW_ALL_ORIGINS = False  # Set to False if you want to restrict origins
 
 
 # Client URL
