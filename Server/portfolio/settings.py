@@ -103,37 +103,29 @@ STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
 
 # CORS configuration
-# CORS_ALLOWED_ORIGINS = [
-#     "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
-#     "https://my-portfolio-pmve.onrender.com",  # Backend URL
-#     "http://localhost:5173",  # Local development (if needed)
-# ]
-
-# CORS_ALLOW_CREDENTIALS = True  # Allow credentials (cookies) to be sent
-
-# CORS_ALLOW_HEADERS = list(default_headers) + [
-#     "Authorization",
-#     "Content-Type",
-#     "X-Requested-With",  # For some XMLHttpRequest-based requests
-# ]
-
-# # Ensure `Access-Control-Allow-Credentials` is set to 'true'
-# CORS_ALLOW_ALL_ORIGINS = False  # Set to False to restrict origins
-
-
 CORS_ALLOWED_ORIGINS = [
-    "https://my-portfolio-1-b7xw.onrender.com",
-    "http://my-portfolio-1-b7xw.onrender.com",
-    "https://my-portfolio-pmve.onrender.com",
+    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
+    "https://my-portfolio-pmve.onrender.com",  # Backend URL
+    "http://localhost:5173",  # Local development (if needed)
 ]
 
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True  # Allow credentials (cookies) to be sent
+
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "Authorization",
     "Content-Type",
-    "X-CSRFToken",
-    "X-Requested-With",
+    "X-Requested-With",  # For some XMLHttpRequest-based requests
 ]
+
+# Ensure `Access-Control-Allow-Credentials` is set to 'true'
+CORS_ALLOW_ALL_ORIGINS = False  # Set to False to restrict origins
+
+
+# CORS_ALLOWED_ORIGINS = [
+#     "https://my-portfolio-1-b7xw.onrender.com",
+#     "http://my-portfolio-1-b7xw.onrender.com",
+#     "https://my-portfolio-pmve.onrender.com",
+# ]
 
 
 # Client URL
