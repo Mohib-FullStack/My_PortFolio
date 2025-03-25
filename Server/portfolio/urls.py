@@ -15,18 +15,43 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+# from django.conf import settings
+# from django.contrib import admin
+# from django.urls import include, path
+
+# urlpatterns = [
+#     path("admin/", admin.site.urls),
+#     path("api/contacts/", include("Contact.urls")),  # Include Contact app URLs
+#     path("api/resume/", include("Resume.urls")),  # Include Resume app URLs
+# ]
+
+
+# # Enable debug toolbar only in debug mode
+# if settings.DEBUG:
+#     import debug_toolbar
+
+#     urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+
+
 from django.conf import settings
 from django.contrib import admin
+from django.http import HttpResponse  # Add this
 from django.urls import include, path
 
+
+# Simple test view
+def test_view(request):
+    return HttpResponse("Backend is working! ✅")
+
+
 urlpatterns = [
+    path("", test_view),  # Root URL test
     path("admin/", admin.site.urls),
-    path("api/contacts/", include("Contact.urls")),  # Include Contact app URLs
-    path("api/resume/", include("Resume.urls")),  # Include Resume app URLs
+    path("api/contacts/", include("Contact.urls")),
+    path("api/resume/", include("Resume.urls")),
 ]
 
-
-# Enable debug toolbar only in debug mode
+# Debug toolbar (dev only)
 if settings.DEBUG:
     import debug_toolbar
 
