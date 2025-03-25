@@ -12,49 +12,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config(
     "SECRET_KEY", default="uik3z=ovrad_r_km6bt%))&2a^m!kx)md&#oi7x%ml1bdro0b1"
 )
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = config("DEBUG", default=True, cast=bool)
 
-# Enhanced security headers
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1").split(",")
 
-# Allowed hosts
 ALLOWED_HOSTS = [
-    "my-portfolio-pmve.onrender.com",
-    "my-portfolio-1-b7xw.onrender.com",
     "localhost",
     "127.0.0.1",
+    "my-portfolio-pmve.onrender.com",  # Backend URL
+    "my-portfolio-1-b7xw.onrender.com",  # Frontend URL
 ]
 
-# CORS configuration
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = [
-    "https://my-portfolio-1-b7xw.onrender.com",
-    "http://my-portfolio-1-b7xw.onrender.com",
-]
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
-CORS_ALLOW_HEADERS = list(default_headers) + ["Authorization", "Content-Type"]
-CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 
-# CSRF Trusted Origins
-CSRF_TRUSTED_ORIGINS = [
-    "https://my-portfolio-1-b7xw.onrender.com",
-    "https://my-portfolio-pmve.onrender.com",
-]
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-# Cookie settings
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_HTTPONLY = False  # Required for Axios to read CSRF token
-SESSION_COOKIE_HTTPONLY = True
 
-# Debug toolbar
 INTERNAL_IPS = ["127.0.0.1"]
 
-# Templates
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -110,7 +85,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# Haystack configuration
 HAYSTACK_CONNECTIONS = {
     "default": {
         "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
@@ -127,8 +101,17 @@ CELERY_TASK_SERIALIZER = "json"
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
+# CORS configuration
+CORS_ALLOWED_ORIGINS = [
+    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend
+    "https://my-portfolio-pmve.onrender.com",  # Backend
+    "http://localhost:5173",  # Local development
+]
+
+
 # Client URL
-CLIENT_URL = config("CLIENT_URL", default="http://localhost:5173")
+CLIENT_URL = config("CLIENT_URL", default="https://my-portfolio-1-b7xw.onrender.com")
+
 
 # URLs and WSGI settings
 ROOT_URLCONF = "portfolio.urls"
@@ -148,10 +131,17 @@ DATABASES = {
 }
 
 # Cloudinary configuration
+CLOUDINARY_NAME = config("CLOUDINARY_NAME")
+CLOUDINARY_API = config("CLOUDINARY_API")
+CLOUDINARY_SECRET_KEY = config("CLOUDINARY_SECRET_KEY")
+
+if not CLOUDINARY_NAME or not CLOUDINARY_API or not CLOUDINARY_SECRET_KEY:
+    raise ValueError("Cloudinary configuration is incomplete.")
+
 CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": config("CLOUDINARY_NAME"),
-    "API_KEY": config("CLOUDINARY_API"),
-    "API_SECRET": config("CLOUDINARY_SECRET_KEY"),
+    "CLOUD_NAME": CLOUDINARY_NAME,
+    "API_KEY": CLOUDINARY_API,
+    "API_SECRET": CLOUDINARY_SECRET_KEY,
 }
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
@@ -164,25 +154,36 @@ EMAIL_HOST_USER = config("SMTP_USERNAME")
 EMAIL_HOST_PASSWORD = config("SMTP_PASSWORD")
 
 # Static files
+# Add this line to define the STATIC_ROOT
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# # Ensure you have the following in your settings as well
+# STATIC_URL = "/static/"
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
+
+
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Required for deployment
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Serve static files with WhiteNoise
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
 
 # Authentication
+# AUTH_USER_MODEL = "User.User"
+
+# Django REST Framework configuration
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
-    ],
-    "DEFAULT_PARSER_CLASSES": [
-        "rest_framework.parsers.JSONParser",
-        "rest_framework.parsers.FormParser",
-        "rest_framework.parsers.MultiPartParser",
-    ],
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 
