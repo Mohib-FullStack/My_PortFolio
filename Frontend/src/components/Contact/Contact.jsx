@@ -1,11 +1,12 @@
 import { Box, Button, CircularProgress, Container, Paper, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../../axiosInstance";
 import { clearContactState, submitContactForm } from "../../features/contact/contactSlice";
 import { showSnackbar } from "../../features/snackbar/snackbarSlice";
-import axiosInstance from "../../utils/axiosInstance";
 import EarthCanvas from "../canvas/Earth";
 import StarsCanvas from "../canvas/Stars";
+
 
 const Contact = () => {
   const dispatch = useDispatch();
