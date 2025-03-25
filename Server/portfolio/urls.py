@@ -47,7 +47,7 @@ def test_view(request):
 urlpatterns = [
     path("", test_view),  # Root URL test
     path("admin/", admin.site.urls),
-    path("api/contacts/", include("Contact.urls")),
+    path("api/", include("Contact.urls")),
     path("api/resume/", include("Resume.urls")),
 ]
 
