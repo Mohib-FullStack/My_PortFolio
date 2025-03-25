@@ -22,7 +22,7 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/contacts/", include("Contact.urls")),  # Include Contact app URLs
-    path("api/contacts/", include("Resume.urls")),  # Include Resume app URLs
+    path("api/resume/", include("Resume.urls")),  # Include Resume app URLs
 ]
 
 
