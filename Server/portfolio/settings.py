@@ -1,6 +1,6 @@
-# """
-# Django production settings for Render deployment.
-# """
+"""
+Django production settings for Render deployment.
+"""
 
 # import os
 # from datetime import timedelta
@@ -417,7 +417,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1").split(",")
 
-# # ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+# ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # DEBUG = False  # Make sure it's False in production
 # ALLOWED_HOSTS = ["localhost", ".render.com"]
@@ -679,11 +679,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": config("DB_NAME"),
-#         "USER": config("DB_USER"),
-#         "PASSWORD": config("DB_PASSWORD"),
-#         "HOST": config("DB_HOST"),
-#         "PORT": config("DB_PORT", default="5432"),
+#         "NAME": config("POSTGRES_DATABASE"),
+#         "USER": config("POSTGRES_USER"),
+#         "PASSWORD": config("POSTGRES_PASSWORD"),
+#         "HOST": config("POSTGRES_HOST"),
+#         "PORT": config("POSTGRES_PORT", default="5432"),
 #     }
 # }
 
