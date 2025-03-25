@@ -22,6 +22,7 @@ django-debug-toolbar = "^5.1.0"  # Keep this only for local development
 cloudinary = "^1.43.0"
 django-cloudinary-storage = "^0.3.0"
 django-haystack = "^3.3.0"
+dj-database-url = "^2.3.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
