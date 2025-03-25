@@ -106,8 +106,7 @@ STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 CORS_ALLOWED_ORIGINS = [
     "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
     "https://my-portfolio-pmve.onrender.com",  # Backend URL
-    "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
-    # "http://localhost:5173",  # Local development (if needed)
+    "http://localhost:5173",  # Local development (if needed)
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Allow credentials (cookies) to be sent
