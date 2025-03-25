@@ -159,7 +159,7 @@ const Resume = () => {
 
               <ListItemText
                 primary="Projet Egipte_lll : Refonte complète d’une application obsolète (Windev)"
-                secondary="Conception et développement en React.js, Node.js et PostgreSQL. Création d’API RESTful, optimisation des performances, amélioration UX, et collaboration Agile."
+                secondary="Conception et développement en React.js, Node.js et PostgreSQL. Création d’API RESTful, optimisation des performances, amélioration UX."
               />
               {/* Business Manager */}
               <Typography variant="h6" fontWeight="bold" sx={{ marginTop: 3 }}>
