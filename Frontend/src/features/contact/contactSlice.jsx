@@ -16,18 +16,34 @@ export const fetchContacts = createAsyncThunk(
 
 // ✅ Submit Contact Form
 // ✅ Submit Contact Form
+// export const submitContactForm = createAsyncThunk(
+//   "contact/submitContactForm",
+//   async (formData, { rejectWithValue }) => {
+//     try {
+//       const response = await axiosInstance.post("/contacts/", formData, {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       });
+//       return response.data; // Return the entire response
+//     } catch (error) {
+//       return rejectWithValue(error.response?.data?.error || "Failed to submit contact form");
+//     }
+//   }
+// );
+
 export const submitContactForm = createAsyncThunk(
   "contact/submitContactForm",
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/contacts/", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data; // Return the entire response
+      const response = await axiosInstance.post("/contacts/", formData);
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.error || "Failed to submit contact form");
+      return rejectWithValue(
+        error.response?.data?.error || 
+        error.message || 
+        "Failed to submit contact form"
+      );
     }
   }
 );
