@@ -183,6 +183,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+import dj_database_url
 from corsheaders.defaults import default_headers
 from decouple import config
 
@@ -311,17 +312,30 @@ ROOT_URLCONF = "portfolio.urls"
 WSGI_APPLICATION = "portfolio.wsgi.application"
 
 # Database settings
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": config("POSTGRES_DATABASE"),
+#         "USER": config("POSTGRES_USER"),
+#         "PASSWORD": config("POSTGRES_PASSWORD"),
+#         "HOST": config("POSTGRES_HOST", default="localhost"),
+#         "PORT": config("POSTGRES_PORT", default="5432"),
+#         "OPTIONS": {"options": "-c search_path=public"},
+#     }
+# }
+
+
+# # ========================
+# # 3. DATABASE (PostgreSQL)
+# # ========================
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("POSTGRES_DATABASE"),
-        "USER": config("POSTGRES_USER"),
-        "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": config("POSTGRES_HOST", default="localhost"),
-        "PORT": config("POSTGRES_PORT", default="5432"),
-        "OPTIONS": {"options": "-c search_path=public"},
-    }
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL"),  # Read from environment variables
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
+
 
 # Cloudinary configuration
 CLOUDINARY_NAME = config("CLOUDINARY_NAME")
