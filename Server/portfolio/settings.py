@@ -179,6 +179,7 @@ Django production settings for Render deployment.
 # # python-decouple==3.8
 
 # ! previous production
+# Environment Variables & Debugging Setup
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -186,8 +187,23 @@ from pathlib import Path
 import dj_database_url
 from corsheaders.defaults import default_headers
 from decouple import config
+from dotenv import load_dotenv
 
-# Base directory of the project
+# Load environment variables from .env
+load_dotenv()
+
+# Debugging: Check if DATABASE_URL is being set correctly
+print("DATABASE_URL:", os.getenv("DATABASE_URL"))  # Check if it's set
+print("DATABASE_URL (decouple):", config("DATABASE_URL", default="NOT SET"))
+
+# Test database connection
+from django.db import connection
+
+connection.ensure_connection()
+print("Database connection successful!")
+
+# Base Directory & Security Settings
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
@@ -198,6 +214,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1").split(",")
 
+# Allow specific hosts (ensure these match deployment settings)
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
@@ -205,11 +222,8 @@ ALLOWED_HOSTS = [
     "my-portfolio-1-b7xw.onrender.com",  # Frontend URL
 ]
 
-
+# Debug mode (should be False in production)
 DEBUG = config("DEBUG", default=False, cast=bool)
-
-
-INTERNAL_IPS = ["127.0.0.1"]
 
 
 TEMPLATES = [
@@ -228,7 +242,8 @@ TEMPLATES = [
     },
 ]
 
-# Installed applications
+
+# Installed Apps & Middleware
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -236,6 +251,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Custom apps
     "Home",
     "About",
     "Projects",
@@ -244,6 +260,7 @@ INSTALLED_APPS = [
     "Resume",
     "Contact",
     "User",
+    # Third-party apps
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt",
@@ -254,7 +271,6 @@ INSTALLED_APPS = [
     "haystack",
 ]
 
-# Middleware
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -266,6 +282,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Debug Toolbar (only active locally)
+INTERNAL_IPS = ["127.0.0.1"]
+
 
 HAYSTACK_CONNECTIONS = {
     "default": {
@@ -284,11 +304,25 @@ STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 
 
-# CORS configuration
+# # ========================
+# # 3. DATABASE (PostgreSQL)
+# # ========================
+DATABASE_URL = config("DATABASE_URL", default=os.getenv("DATABASE_URL"))
+
+DATABASES = {
+    "default": dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
+
+
+# CORS & Allowed Origins
 CORS_ALLOWED_ORIGINS = [
     "https://my-portfolio-1-b7xw.onrender.com",  # Frontend URL
     "https://my-portfolio-pmve.onrender.com",  # Backend URL
-    "http://localhost:5173",  # Local development (if needed)
+    "http://localhost:5173",  # Local development
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Allow credentials (cookies) to be sent
@@ -299,7 +333,6 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     "X-Requested-With",  # For some XMLHttpRequest-based requests
 ]
 
-# Ensure `Access-Control-Allow-Credentials` is set to 'true'
 CORS_ALLOW_ALL_ORIGINS = False  # Set to False to restrict origins
 
 
@@ -311,31 +344,33 @@ CLIENT_URL = config("CLIENT_URL", default="https://my-portfolio-1-b7xw.onrender.
 ROOT_URLCONF = "portfolio.urls"
 WSGI_APPLICATION = "portfolio.wsgi.application"
 
-# Database settings
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": config("POSTGRES_DATABASE"),
-#         "USER": config("POSTGRES_USER"),
-#         "PASSWORD": config("POSTGRES_PASSWORD"),
-#         "HOST": config("POSTGRES_HOST", default="localhost"),
-#         "PORT": config("POSTGRES_PORT", default="5432"),
-#         "OPTIONS": {"options": "-c search_path=public"},
-#     }
-# }
 
+# Static & Media Files
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Required for deployment
 
-# # ========================
-# # 3. DATABASE (PostgreSQL)
-# # ========================
-DATABASES = {
-    "default": dj_database_url.config(
-        default=config("DATABASE_URL"),  # Read from environment variables
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Serve static files with WhiteNoise (improves performance)
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+# Authentication & Permissions
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
 
 # Cloudinary configuration
 CLOUDINARY_NAME = config("CLOUDINARY_NAME")
@@ -352,6 +387,7 @@ CLOUDINARY_STORAGE = {
 }
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
+
 # Email configuration
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -360,37 +396,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("SMTP_USERNAME")
 EMAIL_HOST_PASSWORD = config("SMTP_PASSWORD")
 
-# Static files
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Required for deployment
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-# Serve static files with WhiteNoise
-MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
-
-
-# Authentication
-# AUTH_USER_MODEL = "User.User"
-
-# Django REST Framework configuration
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
-}
-
-# JWT settings
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": True,
-}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
