@@ -32,6 +32,19 @@ try:
 except ImportError:
     print("🟡 No local_settings.py found - using production settings")
 
+    # Early environment check
+IS_RENDER = os.getenv("RENDER", "").lower() == "true"
+
+if IS_RENDER and not os.getenv("DATABASE_URL"):
+    raise ValueError("DATABASE_URL must be set in production")
+
+# Database configuration
+DATABASES = {
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL"), conn_max_age=600, ssl_require=IS_RENDER
+    )
+}
+
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
