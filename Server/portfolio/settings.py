@@ -371,13 +371,16 @@ IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
 DEBUG = not IS_PRODUCTION and config("DEBUG", default=False, cast=bool)
 
 # # Base database configuration
-DATABASES = {
-    "default": dj_database_url.config(
-        default=config("DATABASE_URL", default=""),
-        conn_max_age=600,
-        ssl_require=IS_PRODUCTION,
-    )
-}
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default=config("DATABASE_URL", default=""),
+#         conn_max_age=600,
+#         ssl_require=IS_PRODUCTION,
+#     )
+# }
+
+
+DATABASES = {"default": dj_database_url.config(default=os.getenv("DATABASE_URL"))}
 
 # Local development overrides
 if not IS_PRODUCTION:
