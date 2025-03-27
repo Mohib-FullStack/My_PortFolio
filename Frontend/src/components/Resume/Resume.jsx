@@ -444,7 +444,7 @@ const Resume = () => {
                   variant="contained"
                   color="secondary"
                   startIcon={<GetAppIcon />}
-                  href="/motivation_fr.pdf"
+                  href="/motivation_letter_fr.pdf"
                   download="Rahman_Mohibur_Motivation_FR.pdf"
                 >
                   Télécharger la Lettre (Français)
@@ -469,7 +469,7 @@ const Resume = () => {
                   variant="contained"
                   color="secondary"
                   startIcon={<GetAppIcon />}
-                  href="/motivation_en.pdf"
+                  href="/motivation_letter_en.pdf"
                   download="Rahman_Mohibur_Motivation_EN.pdf"
                 >
                   Download Letter (English)
