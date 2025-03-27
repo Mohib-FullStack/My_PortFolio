@@ -70,28 +70,28 @@ ALLOWED_HOSTS = [
 # ==============================================
 
 # Force production database configuration
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "my_portfolio_db_fa0r",
-#         "USER": "my_portfolio_db_fa0r_user",
-#         "PASSWORD": "CiM3U7AobOFeqszWeDKDY7MdnMIfRmPH",
-#         "HOST": "dpg-cvhl39lds78s7398vee0-a.frankfurt-postgres.render.com",
-#         "PORT": "5432",
-#         "OPTIONS": {
-#             "sslmode": "require",  # Critical for Render
-#         },
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "my_portfolio_db_fa0r",
+        "USER": "my_portfolio_db_fa0r_user",
+        "PASSWORD": "CiM3U7AobOFeqszWeDKDY7MdnMIfRmPH",
+        "HOST": "dpg-cvhl39lds78s7398vee0-a.frankfurt-postgres.render.com",
+        "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "require",  # Critical for Render
+        },
+    }
+}
 
-# # Test connection immediately
-# try:
-#     from django.db import connection
+# Test connection immediately
+try:
+    from django.db import connection
 
-#     connection.ensure_connection()
-#     print("🟢 Production database connection successful!")
-# except Exception as e:
-#     print(f"🔴 Production database connection failed: {e}")
+    connection.ensure_connection()
+    print("🟢 Production database connection successful!")
+except Exception as e:
+    print(f"🔴 Production database connection failed: {e}")
 
 # ==============================================
 # 🟢 DATABASE CONFIGURATION
@@ -212,23 +212,6 @@ ALLOWED_HOSTS = [
 #     print(f"🔴 Database connection failed: {e}")
 
 
-# ==============================================
-# 🟢 PRODUCTION DATABASE CONFIGURATION
-# ==============================================
-
-# Use this instead of your current database config
-DATABASES = {
-    "default": dj_database_url.config(
-        default=config("DATABASE_URL", default="postgresql://localhost/postgres"),
-        conn_max_age=600,
-        ssl_require=not DEBUG,
-    )
-}
-
-# Add this early in your settings
-IS_RENDER = os.getenv("RENDER", "").lower() == "true"
-if IS_RENDER and not os.getenv("DATABASE_URL"):
-    raise ValueError("DATABASE_URL must be set in production")
 # ==============================================
 # 🔵 4. APPLICATION DEFINITION
 # ==============================================
