@@ -165,38 +165,57 @@ ALLOWED_HOSTS = [
 # ==============================================
 
 # Environment detection
-IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
-DEBUG = config("DEBUG", default=not IS_PRODUCTION, cast=bool)
+# IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
+# DEBUG = config("DEBUG", default=not IS_PRODUCTION, cast=bool)
 
-# Database configuration
-if not IS_PRODUCTION:
-    try:
-        from .local_settings import DATABASES
+# # Database configuration
+# if not IS_PRODUCTION:
+#     try:
+#         from .local_settings import DATABASES
 
-        print("🟢 Local development configuration loaded")
-    except ImportError:
-        DATABASES = {
-            "default": dj_database_url.config(
-                default=config("DATABASE_URL"), conn_max_age=600, ssl_require=False
-            )
-        }
-else:
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=config("DATABASE_URL"), conn_max_age=600, ssl_require=True
-        )
-    }
+#         print("🟢 Local development configuration loaded")
+#     except ImportError:
+#         DATABASES = {
+#             "default": dj_database_url.config(
+#                 default=config("DATABASE_URL"), conn_max_age=600, ssl_require=False
+#             )
+#         }
+# else:
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             default=config("DATABASE_URL"), conn_max_age=600, ssl_require=True
+#         )
+#     }
 
-# Single connection test
-try:
-    from django.db import connection
+# # Single connection test
+# try:
+#     from django.db import connection
 
-    connection.ensure_connection()
-    print(
-        f"🟢 {'Development' if not IS_PRODUCTION else 'Production'} DB connection successful"
+#     connection.ensure_connection()
+#     print(
+#         f"🟢 {'Development' if not IS_PRODUCTION else 'Production'} DB connection successful"
+#     )
+# except Exception as e:
+#     print(f"🔴 Database connection failed: {e}")
+
+
+# ==============================================
+# 🟢 PRODUCTION DATABASE CONFIGURATION
+# ==============================================
+
+# Use this instead of your current database config
+DATABASES = {
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL", default="postgresql://localhost/postgres"),
+        conn_max_age=600,
+        ssl_require=not DEBUG,
     )
-except Exception as e:
-    print(f"🔴 Database connection failed: {e}")
+}
+
+# Add this early in your settings
+IS_RENDER = os.getenv("RENDER", "").lower() == "true"
+if IS_RENDER and not os.getenv("DATABASE_URL"):
+    raise ValueError("DATABASE_URL must be set in production")
 # ==============================================
 # 🔵 4. APPLICATION DEFINITION
 # ==============================================
