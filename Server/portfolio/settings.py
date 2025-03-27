@@ -306,10 +306,11 @@ DATABASES = {
         "HOST": "dpg-cvhl39lds78s7398vee0-a.frankfurt-postgres.render.com",
         "PORT": "5432",
         "OPTIONS": {
-            "sslmode": "require",  # Critical for Render
+            "sslmode": "require",
         },
     }
 }
+
 
 # Test connection immediately
 try:
