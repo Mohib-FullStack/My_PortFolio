@@ -296,14 +296,59 @@ ALLOWED_HOSTS = [
 # 🟢 PRODUCTION DATABASE CONFIGURATION (FOR RENDER)
 # ==============================================
 # Detect if running on Render
+# IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
+
+# DEBUG = config("DEBUG", default=not IS_PRODUCTION, cast=bool)
+
+# # Database Configuration
+# DATABASE_URL = config("DATABASE_URL", default="")  # Fetch from env
+
+# if IS_PRODUCTION:
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             default=DATABASE_URL, conn_max_age=600, ssl_require=True
+#         )
+#     }
+#     print("🟢 Production DB configuration loaded")
+# else:
+#     try:
+#         from .local_settings import DATABASES
+
+#         print("🟢 Local development configuration loaded")
+#     except ImportError:
+#         DATABASES = {
+#             "default": dj_database_url.config(
+#                 default=DATABASE_URL, conn_max_age=600, ssl_require=False
+#             )
+#         }
+
+# # Test database connection
+# try:
+#     from django.db import connection
+
+#     connection.ensure_connection()
+#     print(
+#         f"🟢 {'Production' if IS_PRODUCTION else 'Development'} DB connection successful"
+#     )
+# except Exception as e:
+#     print(f"🔴 Database connection failed: {e}")
+
+
+#! test Data for Both local & production
+# ==============================================
+# 🟢 PRODUCTION DATABASE CONFIGURATION (FOR RENDER)
+# ==============================================
+
+# Detect if running on Render
 IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
 
 DEBUG = config("DEBUG", default=not IS_PRODUCTION, cast=bool)
 
-# Database Configuration
-DATABASE_URL = config("DATABASE_URL", default="")  # Fetch from env
+# Fetch DATABASE_URL from the environment
+DATABASE_URL = config("DATABASE_URL")
 
 if IS_PRODUCTION:
+    # Production database configuration (Render)
     DATABASES = {
         "default": dj_database_url.config(
             default=DATABASE_URL, conn_max_age=600, ssl_require=True
@@ -311,16 +356,13 @@ if IS_PRODUCTION:
     }
     print("🟢 Production DB configuration loaded")
 else:
-    try:
-        from .local_settings import DATABASES
-
-        print("🟢 Local development configuration loaded")
-    except ImportError:
-        DATABASES = {
-            "default": dj_database_url.config(
-                default=DATABASE_URL, conn_max_age=600, ssl_require=False
-            )
-        }
+    # Local development database configuration
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL, conn_max_age=600, ssl_require=False
+        )
+    }
+    print("🟢 Local development configuration loaded")
 
 # Test database connection
 try:
