@@ -20,6 +20,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Add this near the top with other core settings
+ROOT_URLCONF = "portfolio.urls"
+
+# Modify your local settings import to be production-safe
+try:
+    if not os.getenv("RENDER"):  # Only load local settings if not on Render
+        from .local_settings import *
+
+        print("🟢 Local development settings loaded")
+except ImportError:
+    print("🟡 No local_settings.py found - using production settings")
+
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,30 +57,146 @@ ALLOWED_HOSTS = [
 # ==============================================
 
 # Force production database configuration
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "my_portfolio_db_fa0r",
-        "USER": "my_portfolio_db_fa0r_user",
-        "PASSWORD": "CiM3U7AobOFeqszWeDKDY7MdnMIfRmPH",
-        "HOST": "dpg-cvhl39lds78s7398vee0-a.frankfurt-postgres.render.com",
-        "PORT": "5432",
-        "OPTIONS": {
-            "sslmode": "require",  # Critical for Render
-        },
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "my_portfolio_db_fa0r",
+#         "USER": "my_portfolio_db_fa0r_user",
+#         "PASSWORD": "CiM3U7AobOFeqszWeDKDY7MdnMIfRmPH",
+#         "HOST": "dpg-cvhl39lds78s7398vee0-a.frankfurt-postgres.render.com",
+#         "PORT": "5432",
+#         "OPTIONS": {
+#             "sslmode": "require",  # Critical for Render
+#         },
+#     }
+# }
 
-# Test connection immediately
+# # Test connection immediately
+# try:
+#     from django.db import connection
+
+#     connection.ensure_connection()
+#     print("🟢 Production database connection successful!")
+# except Exception as e:
+#     print(f"🔴 Production database connection failed: {e}")
+
+# ==============================================
+# 🟢 DATABASE CONFIGURATION
+# ==============================================
+
+# # Default to production database
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": config("POSTGRES_DATABASE", default=""),
+#         "USER": config("POSTGRES_USER", default=""),
+#         "PASSWORD": config("POSTGRES_PASSWORD", default=""),
+#         "HOST": config("POSTGRES_HOST", default=""),
+#         "PORT": config("POSTGRES_PORT", default="5432"),
+#         "OPTIONS": {
+#             "sslmode": "require" if not DEBUG else "disable",
+#         },
+#     }
+# }
+
+# # Override with local settings if in development
+# if DEBUG:
+#     try:
+#         from .local_settings import DATABASES as local_db
+
+#         DATABASES = local_db
+#         print("🟢 Using local database configuration")
+#     except ImportError:
+#         print("🟡 No local database config, using production settings")
+
+# # Test connection
+# try:
+#     from django.db import connection
+
+#     connection.ensure_connection()
+#     print(
+#         f"🟢 {'Development' if DEBUG else 'Production'} database connection successful!"
+#     )
+# except Exception as e:
+#     print(f"🔴 Database connection failed: {e}")
+
+
+# ==============================================
+# 🟢 DATABASE CONFIGURATION (Improved Version)
+# ==============================================
+
+# # Determine environment first
+# IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
+# DEBUG = not IS_PRODUCTION and config("DEBUG", default=False, cast=bool)
+
+# # Base database configuration
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default=config("DATABASE_URL", default=""),
+#         conn_max_age=600,
+#         ssl_require=IS_PRODUCTION,
+#     )
+# }
+
+# # Local development overrides
+# if not IS_PRODUCTION:
+#     try:
+#         from .local_settings import DATABASES as local_db
+
+#         DATABASES = local_db
+#         print("🟢 Local database configuration loaded")
+#     except ImportError:
+#         print("🟡 Using default database configuration")
+
+# # Single connection test
+# try:
+#     from django.db import connection
+
+#     connection.ensure_connection()
+#     print(
+#         f"🟢 {'Development' if not IS_PRODUCTION else 'Production'} database connection successful!"
+#     )
+# except Exception as e:
+#     print(f"🔴 Database connection failed: {e}")
+
+
+# ==============================================
+# 🟢 FINAL OPTIMIZED DATABASE CONFIGURATION
+# ==============================================
+
+# Environment detection
+IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
+DEBUG = config("DEBUG", default=not IS_PRODUCTION, cast=bool)
+
+# Database configuration
+if not IS_PRODUCTION:
+    try:
+        from .local_settings import DATABASES
+
+        print("🟢 Local development configuration loaded")
+    except ImportError:
+        DATABASES = {
+            "default": dj_database_url.config(
+                default=config("DATABASE_URL"), conn_max_age=600, ssl_require=False
+            )
+        }
+else:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=config("DATABASE_URL"), conn_max_age=600, ssl_require=True
+        )
+    }
+
+# Single connection test
 try:
     from django.db import connection
 
     connection.ensure_connection()
-    print("🟢 Production database connection successful!")
+    print(
+        f"🟢 {'Development' if not IS_PRODUCTION else 'Production'} DB connection successful"
+    )
 except Exception as e:
-    print(f"🔴 Production database connection failed: {e}")
-
-
+    print(f"🔴 Database connection failed: {e}")
 # ==============================================
 # 🔵 4. APPLICATION DEFINITION
 # ==============================================
@@ -205,40 +333,63 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ==============================================
 # 🟢 LOCAL DEVELOPMENT OVERRIDES
 # ==============================================
+# try:
+#     from .local_settings import *  # noqa
+
+#     print("🟢 Local settings overrides applied")
+
+#     # Configure debug toolbar only after all settings are loaded
+#     if DEBUG:
+
+#         def configure_debug_toolbar():
+#             if "debug_toolbar" not in INSTALLED_APPS:
+#                 INSTALLED_APPS.append("debug_toolbar")
+#                 MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+
+#         # Delay configuration until after URLconf is ready
+#         from django.apps import apps
+
+#         if apps.ready:
+#             configure_debug_toolbar()
+#         else:
+#             from django.apps import AppConfig
+
+#             original_ready = AppConfig.ready
+
+#             def patched_ready(self):
+#                 original_ready(self)
+#                 if self.name == "django.apps":
+#                     configure_debug_toolbar()
+
+#             AppConfig.ready = patched_ready
+
+# except ImportError:
+#     print("🟡 No local_settings.py found, using production settings")
+# except Exception as e:
+#     print(f"🔴 Error in local_settings.py: {e}")
+
+# ==============================================
+# 🟢 ENVIRONMENT-SPECIFIC OVERRIDES
+# ==============================================
+
+# Determine if we're running on Render
+IS_RENDER = os.getenv("RENDER", "").lower() == "true"
+
 try:
-    from .local_settings import *  # noqa
+    if not IS_RENDER:  # Only load local settings in development
+        from .local_settings import *
 
-    print("🟢 Local settings overrides applied")
+        print("🟢 Local development settings loaded")
 
-    # Configure debug toolbar only after all settings are loaded
-    if DEBUG:
-
-        def configure_debug_toolbar():
-            if "debug_toolbar" not in INSTALLED_APPS:
-                INSTALLED_APPS.append("debug_toolbar")
-                MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
-
-        # Delay configuration until after URLconf is ready
-        from django.apps import apps
-
-        if apps.ready:
-            configure_debug_toolbar()
-        else:
-            from django.apps import AppConfig
-
-            original_ready = AppConfig.ready
-
-            def patched_ready(self):
-                original_ready(self)
-                if self.name == "django.apps":
-                    configure_debug_toolbar()
-
-            AppConfig.ready = patched_ready
+        # Configure debug toolbar safely
+        if DEBUG and "debug_toolbar" not in INSTALLED_APPS:
+            INSTALLED_APPS += ["debug_toolbar"]
+            MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 except ImportError:
-    print("🟡 No local_settings.py found, using production settings")
+    print("🟡 No local_settings.py found - using production settings")
 except Exception as e:
-    print(f"🔴 Error in local_settings.py: {e}")
+    print(f"🔴 Error loading local settings: {str(e)}")
 
 
 #! this is for Developement
