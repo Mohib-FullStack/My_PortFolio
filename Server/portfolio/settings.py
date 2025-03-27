@@ -295,12 +295,22 @@ ALLOWED_HOSTS = [
 # ==============================================
 # 🟢 PRODUCTION DATABASE CONFIGURATION (FOR RENDER)
 # ==============================================
-# Environment detection
+# Detect if running on Render
 IS_PRODUCTION = os.getenv("RENDER", "").lower() == "true"
+
 DEBUG = config("DEBUG", default=not IS_PRODUCTION, cast=bool)
 
-# Database configuration
-if not IS_PRODUCTION:
+# Database Configuration
+DATABASE_URL = config("DATABASE_URL", default="")  # Fetch from env
+
+if IS_PRODUCTION:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL, conn_max_age=600, ssl_require=True
+        )
+    }
+    print("🟢 Production DB configuration loaded")
+else:
     try:
         from .local_settings import DATABASES
 
@@ -308,23 +318,17 @@ if not IS_PRODUCTION:
     except ImportError:
         DATABASES = {
             "default": dj_database_url.config(
-                default=config("DATABASE_URL"), conn_max_age=600, ssl_require=False
+                default=DATABASE_URL, conn_max_age=600, ssl_require=False
             )
         }
-else:
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=config("DATABASE_URL"), conn_max_age=600, ssl_require=True
-        )
-    }
 
-# Single connection test
+# Test database connection
 try:
     from django.db import connection
 
     connection.ensure_connection()
     print(
-        f"🟢 {'Development' if not IS_PRODUCTION else 'Production'} DB connection successful"
+        f"🟢 {'Production' if IS_PRODUCTION else 'Development'} DB connection successful"
     )
 except Exception as e:
     print(f"🔴 Database connection failed: {e}")
@@ -466,45 +470,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ==============================================
 # 🟢 LOCAL DEVELOPMENT OVERRIDES
 # ==============================================
-# try:
-#     from .local_settings import *  # noqa
-
-#     print("🟢 Local settings overrides applied")
-
-#     # Configure debug toolbar only after all settings are loaded
-#     if DEBUG:
-
-#         def configure_debug_toolbar():
-#             if "debug_toolbar" not in INSTALLED_APPS:
-#                 INSTALLED_APPS.append("debug_toolbar")
-#                 MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
-
-#         # Delay configuration until after URLconf is ready
-#         from django.apps import apps
-
-#         if apps.ready:
-#             configure_debug_toolbar()
-#         else:
-#             from django.apps import AppConfig
-
-#             original_ready = AppConfig.ready
-
-#             def patched_ready(self):
-#                 original_ready(self)
-#                 if self.name == "django.apps":
-#                     configure_debug_toolbar()
-
-#             AppConfig.ready = patched_ready
-
-# except ImportError:
-#     print("🟡 No local_settings.py found, using production settings")
-# except Exception as e:
-#     print(f"🔴 Error in local_settings.py: {e}")
-
-# ==============================================
-# 🟢 ENVIRONMENT-SPECIFIC OVERRIDES
-# ==============================================
-
 # Determine if we're running on Render
 IS_RENDER = os.getenv("RENDER", "").lower() == "true"
 
