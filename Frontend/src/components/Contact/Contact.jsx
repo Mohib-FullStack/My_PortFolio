@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Container, Paper, TextField, Typography 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../axiosInstance";
-import { clearContactState, createContact, } from "../../features/contact/contactSlice";
+import { createContact, resetContactState, } from "../../features/contact/contactSlice";
 import { showSnackbar } from "../../features/snackbar/snackbarSlice";
 import EarthCanvas from "../canvas/Earth";
 import StarsCanvas from "../canvas/Stars";
@@ -70,13 +70,13 @@ const Contact = () => {
       dispatch(showSnackbar({ message: successMessage, severity: "success" }));
       setFormData({ full_name: "", email: "", message: "" });
       setTimeout(() => {
-        dispatch(clearContactState());
+        dispatch(resetContactState());
       }, 2000);
     }
     if (error) {
       dispatch(showSnackbar({ message: error, severity: "error" }));
       setTimeout(() => {
-        dispatch(clearContactState());
+        dispatch(resetContactState());
       }, 3000);
     }
   }, [successMessage, error, dispatch]);
