@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Container, Paper, TextField, Typography 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../axiosInstance";
-import { clearContactState, submitContactForm } from "../../features/contact/contactSlice";
+import { clearContactState, createContact, } from "../../features/contact/contactSlice";
 import { showSnackbar } from "../../features/snackbar/snackbarSlice";
 import EarthCanvas from "../canvas/Earth";
 import StarsCanvas from "../canvas/Stars";
@@ -57,7 +57,7 @@ const Contact = () => {
     if (!validateForm()) return;
     
     // Dispatch the form submission with proper data structure
-    dispatch(submitContactForm({
+    dispatch(createContact({
       full_name: formData.full_name,
       email: formData.email,
       message: formData.message
