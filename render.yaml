@@ -1,79 +1,14 @@
-services:
-  - type: web
-    name: MyPortfolioBackend
-    env: python
-    plan: free
-    workingDirectory: Server # Backend working directory
-    buildCommand: |
-      poetry install --no-root
-      poetry run python manage.py collectstatic --noinput
-    startCommand: |
-      poetry run gunicorn portfolio.wsgi:application
-    envVars:
-      - key: POSTGRES_DATABASE
-        value: 'My_portfolio'
-      - key: POSTGRES_USER
-        value: 'postgres'
-      - key: POSTGRES_PASSWORD
-        value: 'mavishaP15112010@'
-      - key: POSTGRES_HOST
-        value: 'localhost'
-      - key: POSTGRES_PORT
-        value: '5432'
-      - key: SMTP_USERNAME
-        value: 'fullstack.mohibur@gmail.com'
-      - key: SMTP_PASSWORD
-        value: 'mnbt rltt wsvj bfve'
-      - key: CLOUDINARY_NAME
-        value: 'dddt2nvvz'
-      - key: CLOUDINARY_API
-        value: '766673569394371'
-      - key: CLOUDINARY_SECRET_KEY
-        value: 'xO-46NSuWXF8Tjs6Zz0_xwRbuqI'
-      - key: SECRET_KEY
-        value: '(s9hjj@hz&pmqt$+(q7(1%98ib2esxc1=7d%yu6vdyz!zvzucw'
-      - key: STRIPE_SECRET_KEY
-        value: 'your_secret_key_here'
-      - key: STRIPE_PUBLIC_KEY
-        value: 'your_publishable_key_here'
-      - key: ALLOWED_HOSTS
-        value: 'http://localhost:5173, .render.com'
-      - key: JWT_ACTIVATION_KEY
-        value: 'fp02=xkyv$&-w$y48g26&hq)3vkcp=rnxfeccksba8*i$mg8y-'
-      - key: JWT_ACCESS_KEY
-        value: '#7a(j(7v&+7ri6=ww=4jkotr8kw5m4y)le1*jlaqel*r*%ev=r'
-      - key: JWT_REFRESH_KEY
-        value: '!c^sg$pa0wvu#7ephw0k*24cvu90+&akwzmdgrtl9dp_3qq&hs'
-      - key: JWT_RESET_PASSWORD_KEY
-        value: '9s)(q3^#^xm4%*q4^v=pq&q3fu!ayj@0&o*_lv8rr^g6ckh9hq'
-      - key: JWT_SECRET
-        value: 'go6z9k9l-ghjjnp0i5uwbl*ffn%r!0xf-#ditl^t76-bm6foz'
-      - key: CLIENT_URL
-        value: 'http://localhost:5173'
-
-  - type: static_site
-    name: MyPortfolioFrontend
-    plan: free
-    workingDirectory: Frontend # Frontend working directory
-    buildCommand: |
-      npm install
-      npm run build
-    publishDirectory: dist # Output directory for the frontend build
-    envVars:
-      - key: VITE_API_URL
-        value: 'https://my-portfolio-pmve.onrender.com/api'
-#! curent
 # services:
 #   - type: web
-#     name: MyPortfolio
+#     name: MyPortfolioBackend
 #     env: python
 #     plan: free
-#     workingDirectory: Server # Set working directory to "Server"
+#     workingDirectory: Server # Backend working directory
 #     buildCommand: |
-#       cd Server && poetry install --no-root
+#       poetry install --no-root
 #       poetry run python manage.py collectstatic --noinput
 #     startCommand: |
-#       cd Server && poetry run gunicorn portfolio.wsgi:application
+#       poetry run gunicorn portfolio.wsgi:application
 #     envVars:
 #       - key: POSTGRES_DATABASE
 #         value: 'My_portfolio'
@@ -116,3 +51,77 @@ services:
 #       - key: CLIENT_URL
 #         value: 'http://localhost:5173'
 
+#   - type: static_site
+#     name: MyPortfolioFrontend
+#     plan: free
+#     workingDirectory: Frontend # Frontend working directory
+#     buildCommand: |
+#       npm install
+#       npm run build
+#     publishDirectory: dist # Output directory for the frontend build
+#     envVars:
+#       - key: VITE_API_URL
+#         value: 'https://my-portfolio-pmve.onrender.com/api'
+#! new
+services:
+  - type: web
+    name: MyPortfolioBackend
+    env: python
+    plan: free
+    workingDirectory: Server
+    buildCommand: |
+      poetry install --no-root
+      poetry run python manage.py collectstatic --noinput
+      poetry run python manage.py migrate  # Added migration command
+    startCommand: |
+      poetry run gunicorn portfolio.wsgi:application
+    envVars:
+      # Database configuration (USE RENDER'S BUILT-IN POSTGRES)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: my_portfolio_db_fa0r # Your Render database name
+          property: connectionString
+
+      # Essential Django settings
+      - key: SECRET_KEY
+        generateValue: true # Let Render generate a secure one
+      - key: DEBUG
+        value: 'False' # Always False in production
+      - key: RENDER
+        value: 'True' # Important for detecting production
+      - key: ALLOWED_HOSTS
+        value: 'my-portfolio-pmve.onrender.com,localhost' # Fixed format
+
+      # Email settings
+      - key: SMTP_USERNAME
+        value: 'fullstack.mohibur@gmail.com'
+      - key: SMTP_PASSWORD
+        value: 'mnbt rltt wsvj bfve'
+
+      # Cloudinary settings
+      - key: CLOUDINARY_NAME
+        value: 'dddt2nvvz'
+      - key: CLOUDINARY_API
+        value: '766673569394371'
+      - key: CLOUDINARY_SECRET_KEY
+        value: 'xO-46NSuWXF8Tjs6Zz0_xwRbuqI'
+
+      # JWT settings (consider using Render's secret management)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_KEY
+        generateValue: true
+      - key: JWT_REFRESH_KEY
+        generateValue: true
+
+  - type: static_site
+    name: MyPortfolioFrontend
+    plan: free
+    workingDirectory: Frontend
+    buildCommand: |
+      npm install
+      npm run build
+    publishDirectory: dist
+    envVars:
+      - key: VITE_API_URL
+        value: 'https://my-portfolio-pmve.onrender.com/api'
