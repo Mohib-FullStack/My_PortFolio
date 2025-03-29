@@ -53,7 +53,7 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
     { label: t("experience"), path: "/experience", icon: <WorkIcon color="info" /> },
     { label: t("blog"), path: "/blog", icon: <BlogIcon color="warning" /> },
     { label: t("contact"), path: "/contact", icon: <ContactMailIcon color="error" /> },
-    { label: t("contact-admin"), path: "/contact-admin", icon: <ContactMailIcon color="error" /> },
+    // { label: t("contact-admin"), path: "/contact-admin", icon: <ContactMailIcon color="error" /> },
     { label: t("resume"), path: "/resume", icon: <ResumeIcon color="primary" /> },
   ];
 

@@ -547,7 +547,7 @@ import {
   resetSuccess,
   setFilters,
   updateContact,
-} from './contactSlice';
+} from "../../features/contact/contactSlice";
 
 const Contact = () => {
   const dispatch = useDispatch();
