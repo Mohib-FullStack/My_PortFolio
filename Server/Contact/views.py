@@ -83,6 +83,7 @@
 from django.db import models  # Add this import
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
@@ -149,34 +150,63 @@ def contact_list(request):
         )
 
 
+# @api_view(["POST"])
+# @permission_classes([AllowAny])
+# def contact_create(request):
+#     """Create a new contact message"""
+#     try:
+#         if not request.session.session_key:
+#             request.session.create()
+
+#         serializer = ContactSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(
+#                 {
+#                     "success": True,
+#                     "message": "Contact submitted successfully",
+#                     "data": serializer.data,
+#                 },
+#                 status=status.HTTP_201_CREATED,
+#             )
+
+#         return Response(
+#             {"success": False, "errors": serializer.errors},
+#             status=status.HTTP_400_BAD_REQUEST,
+#         )
+
+#     except Exception as e:
+#         return Response(
+#             {"success": False, "message": str(e)},
+#             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#         )
+
+
+# views.py
+
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@ensure_csrf_cookie
 def contact_create(request):
-    """Create a new contact message"""
-    try:
-        if not request.session.session_key:
-            request.session.create()
+    serializer = ContactSerializer(data=request.data)
 
-        serializer = ContactSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "success": True,
-                    "message": "Contact submitted successfully",
-                    "data": serializer.data,
-                },
-                status=status.HTTP_201_CREATED,
-            )
-
+    if not serializer.is_valid():
         return Response(
             {"success": False, "errors": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    try:
+        serializer.save()
+        return Response(
+            {"success": True, "message": "Contact submitted successfully"},
+            status=status.HTTP_201_CREATED,
+        )
+
     except Exception as e:
         return Response(
-            {"success": False, "message": str(e)},
+            {"success": False, "message": "Internal server error"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
