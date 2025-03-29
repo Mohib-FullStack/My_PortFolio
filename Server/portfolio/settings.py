@@ -157,18 +157,49 @@ MEDIA_ROOT = BASE_DIR / "media"
 # 🟣 6. CORS & API SETTINGS
 # ==============================================
 
-CORS_ALLOWED_ORIGINS = config(
-    "CORS_ALLOWED_ORIGINS", default="http://localhost:5173", cast=Csv()
-)
+# CORS_ALLOWED_ORIGINS = config(
+#     "CORS_ALLOWED_ORIGINS", default="http://localhost:5173", cast=Csv()
+# )
 
-if IS_PRODUCTION:
-    CORS_ALLOWED_ORIGINS.extend(
-        [
-            "https://my-portfolio-1-b7xw.onrender.com",
-            "https://my-portfolio-pmve.onrender.com",
-        ]
-    )
+# if IS_PRODUCTION:
+#     CORS_ALLOWED_ORIGINS.extend(
+#         [
+#             "https://my-portfolio-1-b7xw.onrender.com",
+#             "https://my-portfolio-pmve.onrender.com",
+#         ]
+#     )
 
+# CORS_ALLOW_CREDENTIALS = True
+
+# Replace your current CORS settings with these:
+CORS_ALLOWED_ORIGINS = [
+    "https://my-portfolio-1-b7xw.onrender.com",
+    "https://my-portfolio-pmve.onrender.com",
+    "http://localhost:5173",
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
