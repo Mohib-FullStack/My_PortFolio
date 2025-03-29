@@ -194,6 +194,7 @@ const Contact = () => {
 
   const [errors, setErrors] = useState({});
   const [csrfToken, setCsrfToken] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch CSRF token when component mounts
   useEffect(() => {
@@ -203,18 +204,23 @@ const Contact = () => {
         setCsrfToken(response.data.csrf_token);
       } catch (error) {
         console.error('Error fetching CSRF token:', error);
+        dispatch(showSnackbar({
+          message: "Failed to initialize form. Please refresh.",
+          severity: "error"
+        }));
       }
     };
     fetchCSRFToken();
-  }, []);
+  }, [dispatch]);
 
-  // Handle input changes
+  // Handle input changes with validation
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    
     // Clear error when user types
     if (errors[name]) {
       setErrors(prev => ({
@@ -224,7 +230,7 @@ const Contact = () => {
     }
   };
 
-  // Validate form
+  // Validate form fields
   const validateForm = () => {
     const newErrors = {};
     if (!formData.full_name.trim()) newErrors.full_name = "Full name is required";
@@ -241,21 +247,45 @@ const Contact = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm() || isSubmitting) return;
+    setIsSubmitting(true);
 
     try {
-      await dispatch(createContact({
+      const result = await dispatch(createContact({
         data: formData,
         config: {
           headers: {
-            'X-CSRFToken': csrfToken
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
           }
         }
       })).unwrap();
 
+      if (result.success) {
+        dispatch(showSnackbar({
+          message: result.message || "Message sent successfully!",
+          severity: "success"
+        }));
+        setFormData({ full_name: "", email: "", message: "" });
+      }
     } catch (error) {
-      // Error handling is done in the useEffect below
       console.error('Submission error:', error);
+      
+      let errorMessage = "Failed to send message";
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+        errorMessage = "Please correct the form errors";
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+
+      dispatch(showSnackbar({
+        message: errorMessage,
+        severity: "error"
+      }));
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => dispatch(resetContactState()), 3000);
     }
   };
 
@@ -266,50 +296,40 @@ const Contact = () => {
         message: successMessage,
         severity: "success"
       }));
-      setFormData({ full_name: "", email: "", message: "" });
-      setTimeout(() => dispatch(resetContactState()), 3000);
     }
 
-    if (error) {
-      let errorMessage = error;
-      
-      // Handle Django validation errors
-      if (error.errors) {
-        setErrors(error.errors);
-        errorMessage = "Please fix the form errors";
-      } else if (typeof error === 'object') {
-        errorMessage = error.message || "Submission failed";
-      }
-
+    if (error && !error.response?.data?.errors) {
       dispatch(showSnackbar({
-        message: errorMessage,
+        message: typeof error === 'string' ? error : "An error occurred",
         severity: "error"
       }));
-      setTimeout(() => dispatch(resetContactState()), 5000);
     }
   }, [successMessage, error, dispatch]);
 
   return (
-    <Box sx={{ position: "relative", minHeight: "100vh" }}>
+    <Box sx={{ 
+      position: "relative", 
+      minHeight: "100vh",
+      backgroundColor: "#1F1346",
+      overflow: "hidden"
+    }}>
       {/* Background Stars */}
       <Box sx={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 1,
-        backgroundColor: "#1F1346"
+        zIndex: 0
       }}>
         <StarsCanvas />
       </Box>
 
       <Container maxWidth="lg" sx={{
-        mt: 8,
-        mb: 10,
-        textAlign: "center",
+        pt: 8,
+        pb: 10,
         position: "relative",
-        zIndex: 2
+        zIndex: 1
       }}>
         <Typography variant="subtitle1" sx={{
           color: "#FFD700",
@@ -344,36 +364,29 @@ const Contact = () => {
             justifyContent: "center",
             width: "100%"
           }}>
-            <Box sx={{
-              width: { xs: "80%", sm: "60%", md: "400px" },
-              height: { xs: "250px", sm: "350px", md: "450px" },
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
-            }}>
-              <EarthCanvas />
-            </Box>
+            <EarthCanvas />
           </Box>
 
           {/* Contact Form Section */}
           <Box sx={{ flex: 1, width: "100%" }}>
-            <div style={{
+            <Box sx={{
               width: "100%",
-              padding: "2px",
-              borderRadius: 20,
+              p: "2px",
+              borderRadius: 4,
               background: "linear-gradient(135deg, #2F1C6A, #1F1346)"
             }}>
               <Paper elevation={4} sx={{
                 p: { xs: 3, sm: 4 },
-                borderRadius: 3,
+                borderRadius: 2,
                 background: "rgba(47, 28, 106, 0.85)",
                 textAlign: "center"
               }}>
                 <Typography variant="h6" sx={{
                   color: "#FFD700",
                   fontWeight: "bold",
-                  fontSize: "1.5rem"
-                }} gutterBottom>
+                  fontSize: "1.5rem",
+                  mb: 2
+                }}>
                   Let's Connect
                 </Typography>
 
@@ -381,7 +394,7 @@ const Contact = () => {
                   display: "flex",
                   flexDirection: "column",
                   gap: "20px",
-                  marginTop: "35px"
+                  marginTop: "28px"
                 }}>
                   <TextField
                     label="Full Name"
@@ -440,7 +453,7 @@ const Contact = () => {
                   <Button
                     type="submit"
                     variant="contained"
-                    disabled={isLoading}
+                    disabled={isSubmitting}
                     sx={{
                       mt: 2,
                       py: 1.5,
@@ -451,10 +464,13 @@ const Contact = () => {
                       fontWeight: "bold",
                       "&:hover": {
                         backgroundColor: "#E6C200"
+                      },
+                      "&:disabled": {
+                        backgroundColor: "rgba(255, 215, 0, 0.5)"
                       }
                     }}
                   >
-                    {isLoading ? (
+                    {isSubmitting ? (
                       <CircularProgress size={24} sx={{ color: "#282C35" }} />
                     ) : (
                       "Send Message"
@@ -462,7 +478,7 @@ const Contact = () => {
                   </Button>
                 </form>
               </Paper>
-            </div>
+            </Box>
           </Box>
         </Box>
       </Container>
