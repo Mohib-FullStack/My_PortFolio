@@ -177,7 +177,7 @@ import { Box, Button, CircularProgress, Container, Paper, TextField, Typography 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../axiosInstance";
-import { createContact, resetContactState } from "../../features/contact/contactSlice";
+import { createContact } from "../../features/contact/contactSlice";
 import { showSnackbar } from "../../features/snackbar/snackbarSlice";
 import EarthCanvas from "../canvas/Earth";
 import StarsCanvas from "../canvas/Stars";
@@ -233,13 +233,17 @@ const Contact = () => {
   // Validate form fields
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.full_name.trim()) newErrors.full_name = "Full name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    const trimmedName = formData.full_name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedMessage = formData.message.trim();
+  
+    if (!trimmedName) newErrors.full_name = "Full name is required";
+    if (!trimmedEmail) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       newErrors.email = "Invalid email format";
     }
-    if (!formData.message.trim()) newErrors.message = "Message is required";
-
+    if (!trimmedMessage) newErrors.message = "Message is required";
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -249,10 +253,17 @@ const Contact = () => {
     e.preventDefault();
     if (!validateForm() || isSubmitting) return;
     setIsSubmitting(true);
-
+  
     try {
+      // Format data exactly as Django expects
+      const formPayload = {
+        full_name: formData.full_name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim()
+      };
+  
       const result = await dispatch(createContact({
-        data: formData,
+        data: formPayload,
         config: {
           headers: {
             'X-CSRFToken': csrfToken,
@@ -260,7 +271,7 @@ const Contact = () => {
           }
         }
       })).unwrap();
-
+  
       if (result.success) {
         dispatch(showSnackbar({
           message: result.message || "Message sent successfully!",
@@ -271,21 +282,21 @@ const Contact = () => {
     } catch (error) {
       console.error('Submission error:', error);
       
-      let errorMessage = "Failed to send message";
+      // Handle Django validation errors
       if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
-        errorMessage = "Please correct the form errors";
-      } else if (error.response?.data?.message) {
-        errorMessage = error.response.data.message;
+        dispatch(showSnackbar({
+          message: "Please correct the form errors",
+          severity: "error"
+        }));
+      } else {
+        dispatch(showSnackbar({
+          message: error.message || "Failed to send message",
+          severity: "error"
+        }));
       }
-
-      dispatch(showSnackbar({
-        message: errorMessage,
-        severity: "error"
-      }));
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => dispatch(resetContactState()), 3000);
     }
   };
 
