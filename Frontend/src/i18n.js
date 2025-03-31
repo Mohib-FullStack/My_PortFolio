@@ -1,10 +1,10 @@
 // i18n.js
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import translationFR from "../locales/fr/translation.json";
-import translationEN from "../locales/en/translation.json";
-import translationZH from "../locales/zh/translation.json";
 import store from "../app/store"; // Import your Redux store
+import translationEN from "../locales/en/translation.json";
+import translationFR from "../locales/fr/translation.json";
+import translationZH from "../locales/zh/translation.json";
 
 const resources = {
   fr: { translation: translationFR },

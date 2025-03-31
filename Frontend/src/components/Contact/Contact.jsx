@@ -181,9 +181,10 @@ import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../axiosInstance";
 import { clearContactState, createContact } from "../../features/contact/contactSlice";
 import { showSnackbar } from "../../features/snackbar/snackbarSlice";
+import theme from "../../theme";
 import EarthCanvas from "../canvas/Earth";
 import StarsCanvas from "../canvas/Stars";
-import theme from "../theme";
+// import theme from "../theme";
 
 const Contact = () => {
   const { t } = useTranslation();
