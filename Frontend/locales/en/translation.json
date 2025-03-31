@@ -1,5 +1,5 @@
 {
-  // NAVIGATION & GENERAL  
+   
   "home": "Home",
   "about": "About",
   "projects": "Projects",
@@ -13,26 +13,26 @@
   "logout": "Logout",
   "login": "Login",
 
-  // HERO SECTION 
+  
   "hero": {
-    // 👋 Greeting text before name
+
     "greeting": "Hello, I am",
-    // 🏷️ Your name (keep consistent across languages)
+
     "name": "Mohib",
-    // 💻 Short professional description
+
     "description": "I develop 3D visuals, user interfaces, and web applications"
   },
 
-  // CONTACT PAGE 
+
   "contact": {
-    // 🔝 Section header (all caps for style)
+
     "subtitle": "CONTACT",
-    // 🏁 Main heading
+
     "title": "Get In Touch",
-    // ✉️ Form header
+  
     "form_title": "Let's Connect",
     
-    // 📝 Form fields
+  
     "form": {
       "name": "Your Full Name",
       "email": "Your Email",
@@ -40,7 +40,7 @@
       "submit": "Send Message"
     },
     
-    // ❌ Validation errors
+
     "errors": {
       "name": "Full name is required",
       "email_required": "Email is required",
