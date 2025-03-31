@@ -69,6 +69,8 @@ npm install react-toastify
 ```sh
 npm install react-icons
 
+npm install strip-json-comments --save-dev
+
 
 ```
 
