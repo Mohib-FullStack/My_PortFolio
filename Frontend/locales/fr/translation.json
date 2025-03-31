@@ -1,24 +1,67 @@
+// {
+//     "home": "Accueil",
+//     "about": "À propos",
+//     "projects": "Projets",
+//     "experience": "Expérience",
+//     "blog": "Blog",
+//     "contact": "Contact",
+//     "resume": "CV",
+//     "fullStackDeveloper": "Développeur Full-Stack",
+//     "language": "Langue",
+//     "profile": "Profil",
+//     "logout": "Déconnexion",
+//     "login": "Connexion",
+
+    
+//       "hero": {
+//         "greeting": "Bonjour, je suis",
+//         "name": "Mohib",
+//         "description": "Je développe des visuels 3D, des interfaces utilisateur, et des applications web"
+//       }
+    
+//   }
+
+
 {
-    "home": "Accueil",
-    "about": "À propos",
-    "projects": "Projets",
-    "experience": "Expérience",
-    "blog": "Blog",
-    "contact": "Contact",
-    "resume": "CV",
-    "fullStackDeveloper": "Développeur Full-Stack",
-    "language": "Langue",
-    "profile": "Profil",
-    "logout": "Déconnexion",
-    "login": "Connexion",
+  // ============ NAVIGATION & GENERAL ============ //
+  "home": "Accueil",
+  "about": "À propos",
+  "projects": "Projets",
+  "experience": "Expérience",
+  "blog": "Blog",
+  "contact": "Contact",
+  "resume": "CV",
+  "fullStackDeveloper": "Développeur Full-Stack",
+  "language": "Langue",
+  "profile": "Profil",
+  "logout": "Déconnexion",
+  "login": "Connexion",
 
+  // ============ HERO SECTION ============ //
+  "hero": {
+    "greeting": "Bonjour, je suis",
+    "name": "Mohib",  // 👈 Name stays same across languages
+    "description": "Je développe des visuels 3D, des interfaces utilisateur, et des applications web"
+  },
+
+  // ============ CONTACT PAGE ============ //
+  "contact": {
+    "subtitle": "CONTACT",  // 🔠 Often kept in English for design consistency
+    "title": "Entrons en Contact",
+    "form_title": "Restons Connectés",
     
-      "hero": {
-        "greeting": "Bonjour, je suis",
-        "name": "Mohib",
-        "description": "Je développe des visuels 3D, des interfaces utilisateur, et des applications web"
-      }
+    "form": {
+      "name": "Votre Nom Complet",
+      "email": "Votre Email",  // 🖊️ "Courriel" also acceptable
+      "message": "Votre Message",
+      "submit": "Envoyer le Message"
+    },
     
+    "errors": {
+      "name": "Le nom complet est requis",
+      "email_required": "L'email est requis",
+      "email_invalid": "Format d'email invalide",
+      "message": "Le message ne peut pas être vide"
+    }
   }
-
-
+}
