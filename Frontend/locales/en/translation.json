@@ -1,5 +1,5 @@
 {
-  // ============ NAVIGATION & GENERAL ============ //
+  // NAVIGATION & GENERAL  
   "home": "Home",
   "about": "About",
   "projects": "Projects",
@@ -13,7 +13,7 @@
   "logout": "Logout",
   "login": "Login",
 
-  // ============ HERO SECTION ============ //
+  // HERO SECTION 
   "hero": {
     // 👋 Greeting text before name
     "greeting": "Hello, I am",
@@ -23,7 +23,7 @@
     "description": "I develop 3D visuals, user interfaces, and web applications"
   },
 
-  // ============ CONTACT PAGE ============ //
+  // CONTACT PAGE 
   "contact": {
     // 🔝 Section header (all caps for style)
     "subtitle": "CONTACT",
