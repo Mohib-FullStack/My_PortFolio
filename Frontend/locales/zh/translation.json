@@ -1,5 +1,4 @@
 {
-
   "home": "首页",
   "about": "关于",
   "projects": "项目",
@@ -7,36 +6,32 @@
   "blog": "博客",
   "contact": "联系",
   "resume": "简历",
-  "fullStackDeveloper": "全栈开发人员",
+  "fullStackDeveloper": "全栈开发工程师",
   "language": "语言",
   "profile": "个人资料",
   "logout": "登出",
   "login": "登录",
 
-
   "hero": {
     "greeting": "你好，我是",
-    "name": "Mohib",  
-    "description": "我开发3D视觉效果、用户界面和网络应用程序"
+    "name": "Mohib",
+    "description": "我开发3D视觉、用户界面和网络应用"
   },
 
-
-  "contact": {
+  "contact_page": {
     "subtitle": "联系",
     "title": "取得联系",
     "form_title": "让我们保持联系",
-    
     "form": {
       "name": "您的全名",
-      "email": "您的电子邮件",
+      "email": "您的电子邮箱",
       "message": "您的留言",
       "submit": "发送信息"
     },
-    
     "errors": {
       "name": "需要全名",
-      "email_required": "需要电子邮件",
-      "email_invalid": "电子邮件格式无效",
+      "email_required": "需要电子邮箱",
+      "email_invalid": "电子邮箱格式无效",
       "message": "留言不能为空"
     }
   }

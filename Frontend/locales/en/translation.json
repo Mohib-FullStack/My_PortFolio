@@ -1,11 +1,11 @@
 {
-   
+ 
   "home": "Home",
   "about": "About",
   "projects": "Projects",
   "experience": "Experience",
   "blog": "Blog",
-  "contact": "Contact",
+  "contact": "Contact",  
   "resume": "Resume",
   "fullStackDeveloper": "Full-Stack Developer",
   "language": "Language",
@@ -13,34 +13,23 @@
   "logout": "Logout",
   "login": "Login",
 
-  
+
   "hero": {
-
     "greeting": "Hello, I am",
-
     "name": "Mohib",
-
     "description": "I develop 3D visuals, user interfaces, and web applications"
   },
 
-
-  "contact": {
-
+  "contact_page": {
     "subtitle": "CONTACT",
-
     "title": "Get In Touch",
-  
     "form_title": "Let's Connect",
-    
-  
     "form": {
       "name": "Your Full Name",
       "email": "Your Email",
       "message": "Your Message",
       "submit": "Send Message"
     },
-    
-
     "errors": {
       "name": "Full name is required",
       "email_required": "Email is required",

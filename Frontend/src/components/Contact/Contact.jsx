@@ -295,7 +295,7 @@ const Contact = () => {
             letterSpacing: "2px",
             textShadow: "0px 0px 10px rgba(145, 94, 255, 0.5)"
           }}>
-            {t("contact.subtitle")}
+            {t("contact_page.subtitle")}
           </Typography>
           <Typography variant="h3" sx={{ 
             fontSize: { xs: "2.5rem", md: "3rem" }, 
@@ -304,7 +304,7 @@ const Contact = () => {
             mt: 2,
             textShadow: "2px 2px 10px rgba(255, 255, 255, 0.3)"
           }}>
-            {t("contact.title")}
+            {t("contact_page.title")}
           </Typography>
         </motion.div>
 
@@ -367,13 +367,13 @@ const Contact = () => {
                     fontSize: "1.5rem",
                     mb: 3
                   }}>
-                    {t("contact.form_title")}
+                    {t("contact_page.form_title")}
                   </Typography>
 
                   {/* Contact Form */}
                   <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                     <TextField
-                      label={t("contact.form.name")}
+                      label={t("contact_page.form.name")}
                       name="full_name"
                       value={formData.full_name}
                       onChange={handleChange}
@@ -392,7 +392,7 @@ const Contact = () => {
                       }}
                     />
                     <TextField
-                      label={t("contact.form.email")}
+                      label={t("contact_page.form.email")}
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
@@ -412,7 +412,7 @@ const Contact = () => {
                       }}
                     />
                     <TextField
-                      label={t("contact.form.message")}
+                      label={t("contact_page.form.message")}
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
@@ -453,7 +453,7 @@ const Contact = () => {
                       {isLoading ? (
                         <CircularProgress size={24} sx={{ color: "white" }} />
                       ) : (
-                        t("contact.form.submit")
+                        t("contact_page.form.submit")
                       )}
                     </Button>
                   </form>

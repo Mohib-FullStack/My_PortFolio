@@ -1,6 +1,4 @@
-
 {
-
   "home": "Accueil",
   "about": "À propos",
   "projects": "Projets",
@@ -14,26 +12,22 @@
   "logout": "Déconnexion",
   "login": "Connexion",
 
-
   "hero": {
     "greeting": "Bonjour, je suis",
-    "name": "Mohib", 
-    "description": "Je développe des visuels 3D, des interfaces utilisateur, et des applications web"
+    "name": "Mohib",
+    "description": "Je développe des visuels 3D, des interfaces utilisateur et des applications web"
   },
 
- 
-  "contact": {
-    "subtitle": "CONTACT", 
+  "contact_page": {
+    "subtitle": "CONTACT",
     "title": "Entrons en Contact",
     "form_title": "Restons Connectés",
-    
     "form": {
       "name": "Votre Nom Complet",
-      "email": "Votre Email", 
+      "email": "Votre Email",
       "message": "Votre Message",
       "submit": "Envoyer le Message"
     },
-    
     "errors": {
       "name": "Le nom complet est requis",
       "email_required": "L'email est requis",
