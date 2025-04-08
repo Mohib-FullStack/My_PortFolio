@@ -64,9 +64,16 @@ const ContactTable = () => {
     highlight: 'rgba(106, 90, 205, 0.2)'  // Semi-transparent primary
   };
 
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchContacts());
+  // }, [dispatch]);
+
+
+  // In your ContactTable component
+useEffect(() => {
+  console.log('Current contacts in Redux state:', contacts);
+  dispatch(fetchContacts());
+}, [dispatch]);
 
   useEffect(() => {
     if (successMessage) {
