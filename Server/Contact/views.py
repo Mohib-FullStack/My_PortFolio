@@ -210,7 +210,7 @@ def get_csrf_token(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def contact_list_admin(request):
+def contact_list_all(request):
     """Admin-only paginated list of all contacts"""
     try:
         contacts = Contact.objects.all().order_by("-created_at")
