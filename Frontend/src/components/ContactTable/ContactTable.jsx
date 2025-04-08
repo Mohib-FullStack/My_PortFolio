@@ -709,13 +709,27 @@ const ContactTable = () => {
     }
   }, [successMessage, error, dispatch]);
 
+  // const filteredContacts = contacts?.filter((contact) => {
+  //   const searchLower = searchTerm.toLowerCase();
+  //   return (
+  //     contact.full_name.toLowerCase().includes(searchLower) ||
+  //     contact.email.toLowerCase().includes(searchLower) ||
+  //     contact.message.toLowerCase().includes(searchLower) ||
+  //     new Date(contact.created_at).toLocaleString().includes(searchLower)
+  //   );
+  // });
+
+
   const filteredContacts = contacts?.filter((contact) => {
+    if (!contact) return false;
+    
     const searchLower = searchTerm.toLowerCase();
+    
     return (
-      contact.full_name.toLowerCase().includes(searchLower) ||
-      contact.email.toLowerCase().includes(searchLower) ||
-      contact.message.toLowerCase().includes(searchLower) ||
-      new Date(contact.created_at).toLocaleString().includes(searchLower)
+      (contact.full_name?.toLowerCase() || '').includes(searchLower) ||
+      (contact.email?.toLowerCase() || '').includes(searchLower) ||
+      (contact.message?.toLowerCase() || '').includes(searchLower) ||
+      (contact.created_at && new Date(contact.created_at).toLocaleString().toLowerCase().includes(searchLower))
     );
   });
 
