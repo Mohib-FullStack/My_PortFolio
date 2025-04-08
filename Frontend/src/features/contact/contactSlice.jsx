@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import axiosInstance from "../../axiosInstance";
 
 // ✅ Submit Contact Form
@@ -7,7 +6,7 @@ export const createContact = createAsyncThunk(
   "contact/createContact",
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/contacts/", formData, {
+      const response = await axiosInstance.post("/contacts/", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -24,30 +23,19 @@ export const createContact = createAsyncThunk(
 );
 
 // ✅ Fetch All Contacts
-// export const fetchContacts = createAsyncThunk(
-//   "contact/fetchContacts",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await axiosInstance.get("/api/contacts/");
-//       return response.data.date; // Changed from payload to date
-//     } catch (error) {
-//       return rejectWithValue(error.response?.data || "Failed to fetch contacts");
-//     }
-//   }
-// );
-
 export const fetchContacts = createAsyncThunk(
   "contact/fetchContacts",
   async (_, { rejectWithValue }) => {
     try {
-      // Temporary fix - use full URL to test
-      const response = await axios.get('https://my-portfolio-pmve.onrender.com/api/contacts/');
-      return response.data.date;
+      const response = await axiosInstance.get("/contacts/");
+      return response.data.date; // Changed from payload to date
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch contacts");
     }
   }
 );
+
+
 
 // ✅ Update Contact
 export const updateContact = createAsyncThunk(
