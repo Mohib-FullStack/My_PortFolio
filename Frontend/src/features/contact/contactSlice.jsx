@@ -102,20 +102,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance";
 
-// ✅ Fetch All Contacts (Admin Feature)
-export const fetchContacts = createAsyncThunk(
-  "contact/fetchContacts",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.get("/contacts/");
-      return response.data.payload; // Return the list of contacts
-    } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to fetch contacts");
-    }
-  }
-);
-
-
 
 // ✅ Submit Contact Form
 export const createContact = createAsyncThunk(
@@ -134,14 +120,25 @@ export const createContact = createAsyncThunk(
   }
 );
 
-
+// ✅ Fetch All Contacts
+export const fetchContacts = createAsyncThunk(
+  "contact/fetchContacts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/api/contacts/"); // Note the /api prefix here
+      return response.data.payload;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to fetch contacts");
+    }
+  }
+);
 
 // ✅ Update Contact
 export const updateContact = createAsyncThunk(
   "contact/updateContact",
   async ({ id, ...contactData }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put(`/contacts/${id}/`, contactData);
+      const response = await axiosInstance.put(`/api/contacts/${id}/`, contactData);
       return response.data.payload;
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || "Failed to update contact");
@@ -149,19 +146,21 @@ export const updateContact = createAsyncThunk(
   }
 );
 
-
 // ✅ Delete Contact
 export const deleteContact = createAsyncThunk(
   "contact/deleteContact",
   async (id, { rejectWithValue }) => {
     try {
-      await axiosInstance.delete(`/contacts/${id}/`);
-      return id; // Return the deleted contact ID
+      await axiosInstance.delete(`/api/contacts/${id}/`);
+      return id;
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || "Failed to delete contact");
     }
   }
 );
+
+
+
 
 // Update your slice's initialState to include contacts
 // ✅ Contact Slice
