@@ -125,7 +125,7 @@ export const fetchContacts = createAsyncThunk(
   "contact/fetchContacts",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/contacts/"); // Note the /api prefix here
+      const response = await axiosInstance.get("/api/contacts/"); // Note the /api prefix here
       return response.data.payload;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch contacts");
