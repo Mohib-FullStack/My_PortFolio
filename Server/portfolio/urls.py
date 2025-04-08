@@ -27,8 +27,7 @@ def test_view(request):
 
 
 urlpatterns = [
-    path("api/", include("Contact.urls")
-    ),  # All contact URLs will be prefixed with /api/
+    path("/", include("Contact.urls")),  # All contact URLs will be prefixed with /api/
     path("api/resume/", include("Resume.urls")),
     path("admin/", admin.site.urls),
 ]
