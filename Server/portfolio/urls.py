@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse  # Add this
@@ -26,10 +27,11 @@ def test_view(request):
 
 
 urlpatterns = [
-    path("", test_view),  # Root URL test
-    path("admin/", admin.site.urls),
-    path("api/", include("Contact.urls")),
+    path(
+        "api/", include("Contact.urls")
+    ),  # All contact URLs will be prefixed with /api/
     path("api/resume/", include("Resume.urls")),
+    path("admin/", admin.site.urls),
 ]
 
 # Debug toolbar (dev only)
