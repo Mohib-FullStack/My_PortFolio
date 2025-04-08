@@ -28,13 +28,9 @@ export const fetchContacts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/api/contacts/");
-      return response.data.payload || response.data;
+      return response.data.date; // Changed from payload to date
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.error || 
-        error.response?.data?.message || 
-        "Failed to fetch contacts"
-      );
+      return rejectWithValue(error.response?.data || "Failed to fetch contacts");
     }
   }
 );
@@ -95,8 +91,14 @@ const contactSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
+      // .addCase(fetchContacts.fulfilled, (state, action) => {
+      //   state.contacts = action.payload;
+      //   state.isLoading = false;
+      //   state.error = null;
+      // })
+
       .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.contacts = action.payload;
+        state.contacts = action.payload || []; // Ensure we always have an array
         state.isLoading = false;
         state.error = null;
       })
