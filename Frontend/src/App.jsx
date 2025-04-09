@@ -3,7 +3,7 @@ import About from './components/About/About';
 import { default as Blog, default as BlogList } from './components/Blog/Blog';
 import BlogPost from './components/Blog/BlogPost';
 import Contact from './components/Contact/Contact';
-// import ContactTable from './components/ContactTable/ContactTable';
+import ContactTable from './components/ContactTable/ContactTable';
 import Experience from './components/Experience/Experience';
 import Home from './components/Home/Home'; // Import a new Home component
 import Footer from './components/layouts/Footer';
@@ -34,7 +34,7 @@ const App = () => {
         <Route path="/experience" element={<Experience />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contacts" element={<Contact />} />
-        {/* <Route path="/contacts" element={<ContactTable />} /> */}
+        <Route path="/contact-table" element={<ContactTable />} />
         <Route path="/resume" element={<Resume />} />
         <Route exact path="/blog" component={BlogList} />
         <Route path="/blog/:id" component={BlogPost} />
