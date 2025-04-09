@@ -25,7 +25,7 @@ export const fetchContacts = createAsyncThunk(
     try {
       const response = await axiosInstance.get("/contacts/");
       return {
-        contacts: Array.isArray(response.data.date) ? response.data.date : [],
+        contacts: Array.isArray(response.data.data) ? response.data.data : [], // Changed from date to data
         count: response.data.count || 0
       };
     } catch (error) {
