@@ -154,7 +154,7 @@ const Resume = () => {
                 Développeur Full-Stack | SNCF Réseau
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Septembre 2022 – Mars 2025
+                Septembre 2022 – April 2025
               </Typography>
 
               <ListItemText
